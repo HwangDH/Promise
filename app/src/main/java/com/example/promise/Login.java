@@ -52,26 +52,26 @@ public class Login extends Activity {
         setContentView(R.layout.activity_login);
 
         shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
-        userid = (EditText)findViewById(R.id.userid);
-        userpasswod =(EditText)findViewById(R.id.userpassword);
-        login = (Button)findViewById(R.id.login);
-        signup = (Button)findViewById(R.id.signup);
-        id_store = (CheckBox)findViewById(R.id.id_store);
-        auto_login = (CheckBox)findViewById(R.id.auto_login);
+        userid = (EditText) findViewById(R.id.userid);
+        userpasswod = (EditText) findViewById(R.id.userpassword);
+        login = (Button) findViewById(R.id.login);
+        signup = (Button) findViewById(R.id.signup);
+        id_store = (CheckBox) findViewById(R.id.id_store);
+        auto_login = (CheckBox) findViewById(R.id.auto_login);
 
 
-        if(shared.getBoolean("Auto_Login_enabled", false)){
+        if (shared.getBoolean("Auto_Login_enabled", false)) {
             userid.setText(shared.getString("ID", ""));
             userpasswod.setText(shared.getString("PW", ""));
             auto_login.setChecked(true);
         }
 
-        if(shared.getBoolean("Auto_Login_enabled2", false)){
-            userid.setText(shared.getString("ID",""));
+        if (shared.getBoolean("Auto_Login_enabled2", false)) {
+            userid.setText(shared.getString("ID", ""));
             id_store.setChecked(true);
         }
 
-       /* FirebaseInstanceId.getInstance().getInstanceId()
+        FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -81,9 +81,10 @@ public class Login extends Activity {
                         }
                         // Get new Instance ID token
                         token = task.getResult().getToken();
+                        System.out.println(token);
                     }
                 });
-*/
+
         auto_login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -146,79 +147,35 @@ public class Login extends Activity {
     }
 
     public void login(final String user_id, final String user_password){
-        String url = "https://scv0319.cafe24.com/weall/promise/login.php";
-        RequestQueue requestQueue = Volley.newRequestQueue(Login.this);
-        /*StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-           public void onResponse(String response)  {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray jsonArray = jsonObject.getJSONArray("result");
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-
-                    String userid2 = jsonObject1.getString("userid");
-                    String userpassword2 = jsonObject1.getString("userpassword");
-                    SharedPreferences shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = shared.edit();
-                    editor.putString("userid",userid2);
-                    editor.putString("userpassword",userpassword2);
-                    editor.commit();
-
-                    Intent intent = new Intent(Login.this,MainActivity.class);
-                    startActivity(intent);
-
-                }
-                catch (JSONException e) {
-                    Toast.makeText(Login.this, "아이디와 비밀번호를 정확하게 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("HiteshURLerror",""+error);
-            }
-        });
-        requestQueue.add(stringRequest);*/
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try {
+                try{
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray jsonArray = jsonObject.getJSONArray("result");
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-                    String userid2 = jsonObject1.getString("userid");
-                    String userpassword2 = jsonObject1.getString("userpassword");
+                    boolean success = jsonObject.getBoolean("success");
+                    SharedPreferences shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = shared.edit();
+                    editor.putString("userid",user_id);
+                    editor.putString("userpassword",user_password);
+                    editor.commit();
 
-                    System.out.println(userid2);
-                    System.out.println(userpassword2);
-                    if(userid2.equals(user_id) && userpassword2.equals(user_password)) {
-                        Intent intent = new Intent(Login.this, MainActivity.class);
+                    if(success){
+                        Intent intent = new Intent(Login.this,MainActivity.class);
                         startActivity(intent);
                     }
+                    else{
+                        Toast.makeText(Login.this, "아이디와 비밀번호를 확인하세요.", Toast.LENGTH_LONG).show();
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
-                catch (JSONException e) {
-                    Toast.makeText(Login.this, "아이디와 비밀번호를 정확하게 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("Hitesh",""+error);
-                Toast.makeText(Login.this, ""+error, Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> stringMap = new HashMap<>();
-                stringMap.put("userid",user_id);
-                stringMap.put("userpassword",user_password);
-                return stringMap;
             }
         };
 
-        requestQueue.add(stringRequest);
+        login_validateRequest ValidateRequest = new login_validateRequest(user_id, user_password, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(Login.this);
+        queue.add(ValidateRequest);
     }
-
 
     @Override
     public void onBackPressed(){
