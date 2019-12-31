@@ -151,7 +151,9 @@ public class CreatePromise extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else{
-                        Toast.makeText(CreatePromise.this, "사용자가 앱을 설치하지 않았습니다. 사용자에게 앱 설치를 요청합니다..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(CreatePromise.this, "사용자가 앱을 설치하지 않았습니다. 사용자에게 앱 설치를 요청페이지로 이동합니다..", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(CreatePromise.this,SendSMS.class);
+                        startActivity(intent);
                     }
                 }catch(Exception e){
                     e.printStackTrace();

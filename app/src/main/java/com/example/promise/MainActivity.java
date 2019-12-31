@@ -48,8 +48,9 @@ public class MainActivity extends Activity {
     String [] pstatus = new String[10];
     String [] phour = new String[10];
     String [] pmin = new String[10];
+    String [] pstate = new String[10];
     String [] ptext = new String[200];
-
+    String [] pid = new String [10];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,12 +106,14 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), DetailView.class);
+                intent.putExtra("id", pid[position]);
                 intent.putExtra("pname", pname[position]);
                 intent.putExtra("pdate", pdate[position]);
                 intent.putExtra("pstatus", pstatus[position]);
                 intent.putExtra("phour", phour[position]);
                 intent.putExtra("pmin", pmin[position]);
                 intent.putExtra("ptext", ptext[position]);
+                intent.putExtra("pstate", pstate[position]);
                 startActivity(intent);
             }
         });
@@ -125,19 +128,23 @@ public class MainActivity extends Activity {
             //JSON 배열 길이만큼 반복문을 실행
             while(count < peoples.length()){
                 JSONObject object = peoples.getJSONObject(count);
+                pid[count] = object.getString("id");
                 pname[count] = object.getString("pname");
                 pdate[count] = object.getString("pdate");
                 pstatus[count] = object.getString("pstatus");
                 phour[count] = object.getString("phour");
                 pmin[count] = object.getString("pmin");
+                pstate[count] = object.getString("pstate");
                 ptext[count] = object.getString("ptext");
                 HashMap<String, String> persons = new HashMap<>();
-                System.out.println(pname[0]);
+
+                persons.put("id", pid[count]);
                 persons.put("pname", pname[count]);
                 persons.put("pdate", pdate[count]);
                 persons.put("pstatus", pstatus[count]);
                 persons.put("phour", phour[count]);
                 persons.put("pmin", pmin[count]);
+                persons.put("pstate", pstate[count]);
                 persons.put("ptext", ptext[count]);
 
                 personList.add(persons);
