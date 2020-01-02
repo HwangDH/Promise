@@ -43,14 +43,17 @@ public class MainActivity extends Activity {
     //뒤로가기 연속 클릭 시간 계산 변수
     final long INTERVAL_TIME = 1000;
     long previousTime = 0;
-    String [] pname = new String[10];
-    String [] pdate = new String[10];
-    String [] pstatus = new String[10];
+    String userphonenumber;
+    String [] id = new String [10];
+    String [] otherphonenumber = new String[10];
+    String [] text = new String[10];
+    String [] endweekend = new String[10];
     String [] phour = new String[10];
     String [] pmin = new String[10];
-    String [] pstate = new String[10];
-    String [] ptext = new String[200];
-    String [] pid = new String [10];
+    String [] agreement = new String[200];
+    String [] status = new String [10];
+    String [] pid = new String[10];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,11 +70,15 @@ public class MainActivity extends Activity {
         personList = new ArrayList<HashMap<String, String>>();
         //
         shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
-        final String userid = shared.getString("userid", "");
-        String url = "https://scv0319.cafe24.com/weall/promise/promiseinfo.php?userid="+userid+"";
+        userphonenumber = shared.getString("userphonenumber", "");
+        //Intent intent = getIntent();
+        //userphonenumber = intent.getStringExtra("userphonenumber");
+
         //데이터베이스 호출
+        String url = "https://scv0319.cafe24.com/weall/promise/promiseinfo.php?userphonenumber="+userphonenumber+"";
+        System.out.println(url);
         getData(url);
-        //System.out.println(url);
+
         //약속생성 버튼 클릭 시
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,8 +100,8 @@ public class MainActivity extends Activity {
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainActivity.this, CreatePromise.class);
-                        intent.putExtra("userid", userid);
+                        Intent intent = new Intent(MainActivity.this, DetailView.class);
+                        intent.putExtra("userphonenumber", userphonenumber);
                         startActivity(intent);
                     }
                 });
@@ -104,16 +111,17 @@ public class MainActivity extends Activity {
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long ids) {
                 Intent intent = new Intent(getApplicationContext(), DetailView.class);
-                intent.putExtra("id", pid[position]);
-                intent.putExtra("pname", pname[position]);
-                intent.putExtra("pdate", pdate[position]);
-                intent.putExtra("pstatus", pstatus[position]);
+                intent.putExtra("id", id[position]);
+                intent.putExtra("otherphonenumber", otherphonenumber[position]);
+                intent.putExtra("text", text[position]);
+                intent.putExtra("endweekend", endweekend[position]);
                 intent.putExtra("phour", phour[position]);
                 intent.putExtra("pmin", pmin[position]);
-                intent.putExtra("ptext", ptext[position]);
-                intent.putExtra("pstate", pstate[position]);
+                intent.putExtra("agreement", agreement[position]);
+                intent.putExtra("status", status[position]);
+                intent.putExtra("pid", pid[position]);
                 startActivity(intent);
             }
         });
@@ -128,29 +136,34 @@ public class MainActivity extends Activity {
             //JSON 배열 길이만큼 반복문을 실행
             while(count < peoples.length()){
                 JSONObject object = peoples.getJSONObject(count);
-                pid[count] = object.getString("id");
-                pname[count] = object.getString("pname");
-                pdate[count] = object.getString("pdate");
-                pstatus[count] = object.getString("pstatus");
+                id[count] = object.getString("id");
+                otherphonenumber[count] = object.getString("otherphonenumber");
+                text[count] = object.getString("text");
+                endweekend[count] = object.getString("endweekend");
                 phour[count] = object.getString("phour");
                 pmin[count] = object.getString("pmin");
-                pstate[count] = object.getString("pstate");
-                ptext[count] = object.getString("ptext");
+                agreement[count] = object.getString("agreement");
+                status[count] = object.getString("status");
+                pid[count] = object.getString("pid");
                 HashMap<String, String> persons = new HashMap<>();
 
-                persons.put("id", pid[count]);
-                persons.put("pname", pname[count]);
-                persons.put("pdate", pdate[count]);
-                persons.put("pstatus", pstatus[count]);
+                System.out.println(otherphonenumber[count]);
+                System.out.println("1");
+                persons.put("id", id[count]);
+                persons.put("otherphonenumber", otherphonenumber[count]);
+                persons.put("text", text[count]);
+                persons.put("endweekend", endweekend[count]);
                 persons.put("phour", phour[count]);
                 persons.put("pmin", pmin[count]);
-                persons.put("pstate", pstate[count]);
-                persons.put("ptext", ptext[count]);
+                persons.put("agreement", agreement[count]);
+                persons.put("status", status[count]);
+                persons.put("pid", pid[count]);
 
                 personList.add(persons);
+
                 adapter = new SimpleAdapter(
                         MainActivity.this, personList, R.layout.promise_list,
-                        new String[] {"pname", "pdate"},
+                        new String[] {"otherphonenumber", "endweekend"},
                         new int[] {R.id.name, R.id.date}
                 );
                 listview.setAdapter(adapter);

@@ -14,32 +14,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.android.volley.VolleyLog.TAG;
 
 public class Login extends Activity {
-    EditText userid, userpasswod;
+    EditText userphonenumber, userpassword;
     Button login, signup;
     CheckBox id_store, auto_login;
-    String user_id, user_password;
+    String user_phonenumber, user_password;
     String token;
 
     SharedPreferences shared;
@@ -52,8 +41,9 @@ public class Login extends Activity {
         setContentView(R.layout.activity_login);
 
         shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
-        userid = (EditText) findViewById(R.id.userid);
-        userpasswod = (EditText) findViewById(R.id.userpassword);
+
+        userphonenumber = (EditText) findViewById(R.id.userphonenumber);
+        userpassword = (EditText) findViewById(R.id.userpassword);
         login = (Button) findViewById(R.id.login);
         signup = (Button) findViewById(R.id.signup);
         id_store = (CheckBox) findViewById(R.id.id_store);
@@ -61,13 +51,13 @@ public class Login extends Activity {
 
 
         if (shared.getBoolean("Auto_Login_enabled", false)) {
-            userid.setText(shared.getString("ID", ""));
-            userpasswod.setText(shared.getString("PW", ""));
+            userphonenumber.setText(shared.getString("userphonenumber", ""));
+            userpassword.setText(shared.getString("PW", ""));
             auto_login.setChecked(true);
         }
 
         if (shared.getBoolean("Auto_Login_enabled2", false)) {
-            userid.setText(shared.getString("ID", ""));
+            userphonenumber.setText(shared.getString("userphonenumber", ""));
             id_store.setChecked(true);
         }
 
@@ -81,7 +71,7 @@ public class Login extends Activity {
                         }
                         // Get new Instance ID token
                         token = task.getResult().getToken();
-                        System.out.println(token);
+                        //System.out.println(token);
                     }
                 });
 
@@ -90,9 +80,9 @@ public class Login extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 editor = shared.edit();
                 if(isChecked){
-                    String id = userid.getText().toString();
-                    String pw = userpasswod.getText().toString();
-                    editor.putString("ID", id);
+                    String user_phonenumber = userphonenumber.getText().toString();
+                    String pw = userpassword.getText().toString();
+                    editor.putString("userphonenumber", user_phonenumber);
                     editor.putString("PW", pw);
                     editor.putBoolean("Auto_Login_enabled", true);
                     editor.commit();
@@ -108,8 +98,8 @@ public class Login extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 editor = shared.edit();
                 if(isChecked){
-                    String id = userid.getText().toString();
-                    editor.putString("ID", id);
+                    String user_phonenumber = userphonenumber.getText().toString();
+                    editor.putString("userphonenumber", user_phonenumber);
                     editor.putBoolean("Auto_Login_enabled2", true);
                     editor.commit();
                 }else{
@@ -122,17 +112,17 @@ public class Login extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user_id = userid.getText().toString();
-                user_password = userpasswod.getText().toString();
+                user_phonenumber = userphonenumber.getText().toString();
+                user_password = userpassword.getText().toString();
 
-                if(user_id.isEmpty()){
+                if(user_phonenumber.isEmpty()){
                     Toast.makeText(Login.this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
                 else if(user_password.isEmpty()){
                     Toast.makeText(Login.this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    login(user_id, user_password);
+                    login(user_phonenumber, user_password);
                 }
             }
         });
@@ -146,7 +136,7 @@ public class Login extends Activity {
         });
     }
 
-    public void login(final String user_id, final String user_password){
+    public void login(final String user_phonenumber, final String user_password){
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -155,7 +145,7 @@ public class Login extends Activity {
                     boolean success = jsonObject.getBoolean("success");
                     SharedPreferences shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = shared.edit();
-                    editor.putString("userid",user_id);
+                    editor.putString("userphonenumber",user_phonenumber);
                     editor.putString("userpassword",user_password);
                     editor.commit();
 
@@ -172,7 +162,7 @@ public class Login extends Activity {
             }
         };
 
-        login_validateRequest ValidateRequest = new login_validateRequest(user_id, user_password, responseListener);
+        login_validateRequest ValidateRequest = new login_validateRequest(user_phonenumber, user_password, responseListener);
         RequestQueue queue = Volley.newRequestQueue(Login.this);
         queue.add(ValidateRequest);
     }

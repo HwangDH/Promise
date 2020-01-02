@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,14 +37,15 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class SignUp extends AppCompatActivity {
     AlertDialog alertdialog;
-    EditText userid, userpassword, userpassword2, username, userage, phonenumber;
+    EditText userphonenumber, userpassword, userpassword2, username, cetrification;
     TextView signup, already;
-    Button id_check;
-
-    int num=0;
-    private boolean validate = false;
-    String user_id, user_id2;
+    Button btn1, btn2;
+    RadioGroup radioGroup1, radioGroup2, radioGroup3;
+    String number = "1234";//인증번호
     String token;
+    String phone_cert = "0";
+    String agreement1="0", agreement2="0", agreement3="0";
+    private boolean validate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +53,16 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         //XML변수 설정
-        userid= (EditText) findViewById(R.id.userid);
+        userphonenumber= (EditText) findViewById(R.id.userphonenumber);
+        cetrification = (EditText)findViewById(R.id.cetrification);
         userpassword= (EditText) findViewById(R.id.userpassword);
         userpassword2 = (EditText)findViewById(R.id.userpassword2);
         username= (EditText) findViewById(R.id.username);
-        userage= (EditText) findViewById(R.id.userage);
-        phonenumber = (EditText)findViewById(R.id.phonenumber);
-        id_check = (Button) findViewById(R.id.id_check);
+        btn1 = (Button) findViewById(R.id.btn1);//인증번호 요청 버튼
+        btn2 = (Button)findViewById(R.id.btn2); //인증확인 버튼
+        radioGroup1 = (RadioGroup)findViewById(R.id.radioGroup1);
+        radioGroup2 = (RadioGroup)findViewById(R.id.radioGroup2);
+        radioGroup3 = (RadioGroup)findViewById(R.id.radioGroup3);
         signup = (TextView) findViewById(R.id.signup);
         already = (TextView) findViewById(R.id.already);
 
@@ -69,65 +74,124 @@ public class SignUp extends AppCompatActivity {
                             Log.w(TAG, "getInstanceId failed", task.getException());
                             return;
                         }
-
                         // Get new Instance ID token
                         token = task.getResult().getToken();
 
-                        // Log and toast
-                        //String msg = getString(R.string.msg_token_fmt, token);
-                        //Log.d(TAG, msg);
                         //Toast.makeText(Signup.this, token, Toast.LENGTH_SHORT).show();
                         System.out.println(token);
                     }
                 });
 
-        id_check.setOnClickListener(new View.OnClickListener() {
+        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rg_btn1){
+                    agreement1 = "1";
+                    Toast.makeText(SignUp.this, "동의하셨습니다..", Toast.LENGTH_SHORT).show();
+                }
+                else if(checkedId == R.id.rg_btn2){
+                    Toast.makeText(SignUp.this, "동의하지 않으셨습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        radioGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rg_btn3){
+                    agreement2 = "1";
+                    Toast.makeText(SignUp.this, "동의하셨습니다..", Toast.LENGTH_SHORT).show();
+                }
+                else if(checkedId == R.id.rg_btn4){
+                    Toast.makeText(SignUp.this, "동의하지 않으셨습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        radioGroup3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rg_btn5){
+                    agreement3 = "1";
+                    Toast.makeText(SignUp.this, "동의하셨습니다..", Toast.LENGTH_SHORT).show();
+                }
+                else if(checkedId == R.id.rg_btn6){
+                    Toast.makeText(SignUp.this, "동의하지 않으셨습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //btn1 = 인증번호 받기 버튼 클릭 시 처리 메소드 부분
+        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user_id= userid.getText().toString();
-                user_id2 = user_id;
-                if (user_id.isEmpty()){
+                String user_phonenumber = userphonenumber.getText().toString();
+                if (user_phonenumber.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                    alertdialog = builder.setMessage("ID is empty")
+                    alertdialog = builder.setMessage("핸드폰 번호를 입력해주세요.")
                             .setPositiveButton("확인", null)
                             .create();
                     alertdialog.show();
                 }
-                else{
+
+                //핸드폰 인증번호 받는 부분 구현 하는 메소드
+                else {
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            try{
-                                //Toast.makeText(Signup.this, response, Toast.LENGTH_LONG).show();
+                            try {
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
 
-                                if(success){//사용할 수 있는 아이디라면
-                                    num=1;
+                                if (success) {//사용할 수 있는 아이디라면
                                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                                    alertdialog = builder.setMessage("you can use ID")
-                                            .setPositiveButton("OK", null)
+                                    alertdialog = builder.setMessage("인증 번호 : " + number)
+                                            .setPositiveButton("확인", null)
                                             .create();
                                     alertdialog.show();
-                                    //System.out.println(num);
                                     validate = true;//검증완료
-                                }else{//사용할 수 없는 아이디라면`
+                                } else {//사용할 수 없는 아이디라면`
                                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                                     alertdialog = builder.setMessage("already used ID")
                                             .setNegativeButton("OK", null)
                                             .create();
                                     alertdialog.show();
-                                    userid.setText("");
+                                    userphonenumber.setText("");
                                 }
 
-                            }catch(Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                     };
-                    ValidateRequest ValidateRequest = new ValidateRequest(user_id, responseListener);
+                    ValidateRequest ValidateRequest = new ValidateRequest(user_phonenumber, responseListener);
                     RequestQueue queue = Volley.newRequestQueue(SignUp.this);
                     queue.add(ValidateRequest);
+                }
+            }
+        });
+
+        //btn2 = 인증번호 확인 버튼 클릭 시 처리 메소드 부분
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String snumber = cetrification.getText().toString();
+                if(snumber.equals(number)){
+                    phone_cert = "1";
+                    userphonenumber.setFocusable(false);
+                    cetrification.setFocusable(false);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    alertdialog = builder.setMessage("인증되었습니다.")
+                            .setPositiveButton("확인", null)
+                            .create();
+                    alertdialog.show();
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
+                    alertdialog = builder.setMessage("인증 실패했습니다. 다시 시도해주세요.")
+                            .setPositiveButton("확인", null)
+                            .create();
+                    alertdialog.show();
                 }
             }
         });
@@ -150,9 +214,6 @@ public class SignUp extends AppCompatActivity {
                 alertdialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //SharedPreferences.Editor editor = shared.edit();
-                        //editor.clear();
-                        //editor.commit();
                         Intent intent = new Intent(SignUp.this, MainActivity.class);
                         startActivity(intent);
                     }
@@ -161,60 +222,51 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
-
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //사용자가 작성한 개인정보 데이터 저장 변수
-                String sid = userid.getText().toString();
+                String sphonenumber = userphonenumber.getText().toString();
+                String sphonecert = phone_cert;
                 String spassword = userpassword.getText().toString();
                 String sname = username.getText().toString();
-                String sage = userage.getText().toString();
-                String sphonenumber = phonenumber.getText().toString();
+                String sagreement1 = agreement1;
+                String sagreement2 = agreement2;
+                String sagreement3 = agreement3;
                 String stoken = token;
 
                 String password1 = userpassword.getText().toString();
                 String password2 = userpassword2.getText().toString();
 
-                //일치하지 않는다면
+                // 비밀번호가 일치하지 않는다면
                 if(PasswordCheck(password1, password2)==false){
                     userpassword.setText("");
                     userpassword2.setText("");
                     Toast.makeText(SignUp.this, "비밀번호가 일치하지않습니다.", Toast.LENGTH_SHORT).show();
                 }
                 //하나라도 정보를 입력하지 않으면
-                else if(sid.isEmpty() ||spassword.isEmpty()||sname.isEmpty()||sage.isEmpty()){
-                    Toast.makeText(SignUp.this, "Fill all details", Toast.LENGTH_SHORT).show();
+                else if(sphonenumber.isEmpty() ||spassword.isEmpty()|| sname.isEmpty()){
+                    Toast.makeText(SignUp.this, "내용을 채워주세요.", Toast.LENGTH_SHORT).show();
                 }
-                //아이디 중복검사를 하지 않았을 경우
-                else if(num==0){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                    alertdialog = builder.setMessage("아이디 중복검사를 해주세요.")
-                            .setPositiveButton("OK", null)
-                            .create();
-                    alertdialog.show();
+                //핸드폰 번호 인증하지 않았을 경우
+                else if(sphonecert.equals("0")){
+                    Toast.makeText(SignUp.this, "핸드폰 번호을 인증해주세요.", Toast.LENGTH_SHORT).show();
                 }
-                //중복검사 후 아이디 변경한 뒤 중복검사를 하지 않았을 경우
-                else if(!user_id.equals(sid)){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                    alertdialog = builder.setMessage("아이디 중복검사를 해주세요.")
-                            .setPositiveButton("OK", null)
-                            .create();
-                    alertdialog.show();
+                else if(sagreement1.equals("0") || sagreement2.equals("0")){
+                    Toast.makeText(SignUp.this, "필수동의를 해주세요.", Toast.LENGTH_SHORT).show();
                 }
                 //모든것이 정상적으로 된다면
                 else {
                     if(PasswordCheck(password1, password2)){
                         //sigup함수 호출 - 회원가입 승인
-                        signup(sid,spassword,sname,sage, sphonenumber, stoken );
-                        SharedPreferences preferences = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
+                        signup(sphonenumber,sphonecert,spassword,sname, sagreement1, sagreement2, sagreement3, stoken );
+                        /*SharedPreferences preferences = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.clear();
-                        editor.putString("userid",sid);
+                        editor.putString("userphonenumber",sphonenumber);
                         editor.putString("userpassword",spassword);
                         editor.putString("username",sname);
-                        editor.putString("userage",sage);
-                        editor.commit();
+                        editor.commit();*/
                         AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                         alertdialog = builder.setMessage("회원가입을 축하합니다.")
                                 .setPositiveButton("OK", null)
@@ -237,7 +289,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     //회원가입이 이뤄지는 함수-PHP호출과 데이터저장
-    public void signup(final String userid, final String userpassword,final String username, final String userage, final String phonenumber, final String token){
+    public void signup(final String userphonenumber, final String phonecert, final String userpassword, final String username, final String agreement1, final String agreement2, final String agreement3,final String token){
         String url = "https://scv0319.cafe24.com/weall/promise/signup.php";
         RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -255,11 +307,13 @@ public class SignUp extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> stringMap = new HashMap<>();
-                stringMap.put("userid",userid);
+                stringMap.put("userphonenumber",userphonenumber);
+                stringMap.put("phonecert",phonecert);
                 stringMap.put("userpassword",userpassword);
                 stringMap.put("username",username);
-                stringMap.put("userage",userage);
-                stringMap.put("phonenumber",phonenumber);
+                stringMap.put("agreement1",agreement1);
+                stringMap.put("agreement2",agreement2);
+                stringMap.put("agreement3",agreement3);
                 stringMap.put( "token", token );
                 return stringMap;
             }

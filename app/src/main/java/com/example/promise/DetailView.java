@@ -15,7 +15,7 @@ public class DetailView extends AppCompatActivity {
     Button btn1,btn2, btn3, btn4;
     TextView name, date, time, txt1, txt2;
     AlertDialog alertDialog;
-    String pid, pname, pdate, pstatus, phour, pmin, pstate, ptext;
+    String id, userphonenumber, otherphonenumber, text, endweekend, phour, pmin, agreement, status, pid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,22 +33,23 @@ public class DetailView extends AppCompatActivity {
 
         //전 액티비티에서 값들 받오오는 부분
         Intent intent = getIntent();
-        pid = intent.getStringExtra("id");
-        pname = intent.getStringExtra("pname");
-        pdate = intent.getStringExtra("pdate");
-        pstatus = intent.getStringExtra("pstatus");
+        id = intent.getStringExtra("id");
+        otherphonenumber = intent.getStringExtra("otherphonenumber");
+        text = intent.getStringExtra("text");
+        endweekend = intent.getStringExtra("endweekend");
         phour = intent.getStringExtra("phour");
         pmin = intent.getStringExtra("pmin");
-        pstate = intent.getStringExtra("pstate");
-        ptext = intent.getStringExtra("ptext");
+        agreement = intent.getStringExtra("agreement");
+        status = intent.getStringExtra("status");
+        pid = intent.getStringExtra("pid");
 
         //받아온 값들을 UI에 설정
-        name.setText(pname);
-        date.setText(pdate);
-        time.setText(pstatus+phour+"시"+pmin+"분");
-        txt1.setText(ptext);
+        name.setText(otherphonenumber);
+        date.setText(endweekend);
+        time.setText(status+phour+"시"+pmin+"분");
+        txt1.setText(text);
 
-        if(pstate.equals("0")) {
+        if(status.equals("0")) {
             txt2.setText("승인X");
         }
         else{
@@ -89,7 +90,7 @@ public class DetailView extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pstate.equals("0")){
+                if(status.equals("0")){
                     alertDialog = new android.app.AlertDialog.Builder(DetailView.this).create();
                     alertDialog.setTitle("약속 승인");
                     alertDialog.setMessage("약속을 승인하시겠습니까?");
@@ -108,7 +109,7 @@ public class DetailView extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(DetailView.this, AgreementPromise.class);
-                            intent.putExtra("ptext", ptext);
+                            intent.putExtra("ptext", text);
                             startActivity(intent);
                         }
                     });

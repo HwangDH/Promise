@@ -15,12 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AgreementPromise"></activity>
+        <activity android:name=".AgreementPromise" />
         <activity android:name=".SendSMS" />
         <activity android:name=".DetailView" />
         <activity android:name=".ChangePromise" />
         <activity android:name=".CreatePromise" />
-        <activity android:name=".SignUp" />
+        <activity android:name=".SignUp" />-
         <activity android:name=".Login" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SplashScreen">

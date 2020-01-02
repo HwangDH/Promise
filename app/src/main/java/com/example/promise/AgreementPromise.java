@@ -23,7 +23,6 @@ public class AgreementPromise extends AppCompatActivity {
         ptext = intent.getStringExtra("ptext");
 
         sendPromise(ptext);
-
     }
 
     public void sendPromise(final  String ptext){
