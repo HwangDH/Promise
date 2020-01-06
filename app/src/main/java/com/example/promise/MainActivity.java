@@ -44,15 +44,11 @@ public class MainActivity extends Activity {
     final long INTERVAL_TIME = 1000;
     long previousTime = 0;
     String userphonenumber;
-    String [] id = new String [10];
-    String [] otherphonenumber = new String[10];
-    String [] text = new String[10];
-    String [] endweekend = new String[10];
-    String [] phour = new String[10];
-    String [] pmin = new String[10];
-    String [] agreement = new String[200];
-    String [] status = new String [10];
-    String [] pid = new String[10];
+    String [] id;
+    String [] otherphonenumber;
+    String [] endweekend;
+    String [] pid;
+    long backKeyPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +72,7 @@ public class MainActivity extends Activity {
 
         //데이터베이스 호출
         String url = "https://scv0319.cafe24.com/weall/promise/promiseinfo.php?userphonenumber="+userphonenumber+"";
-        System.out.println(url);
+        //System.out.println(url);
         getData(url);
 
         //약속생성 버튼 클릭 시
@@ -100,7 +96,7 @@ public class MainActivity extends Activity {
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainActivity.this, DetailView.class);
+                        Intent intent = new Intent(MainActivity.this, CreatePromise.class);
                         intent.putExtra("userphonenumber", userphonenumber);
                         startActivity(intent);
                     }
@@ -113,15 +109,10 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long ids) {
                 Intent intent = new Intent(getApplicationContext(), DetailView.class);
-                intent.putExtra("id", id[position]);
-                intent.putExtra("otherphonenumber", otherphonenumber[position]);
-                intent.putExtra("text", text[position]);
-                intent.putExtra("endweekend", endweekend[position]);
-                intent.putExtra("phour", phour[position]);
-                intent.putExtra("pmin", pmin[position]);
-                intent.putExtra("agreement", agreement[position]);
-                intent.putExtra("status", status[position]);
-                intent.putExtra("pid", pid[position]);
+                intent.putExtra("userphonenumber", userphonenumber);                //나의 폰번호
+                intent.putExtra("id", id[position]);                                    //나의 약속번호
+                intent.putExtra("otherphonenumber", otherphonenumber[position]);    //상대방 폰번호
+                intent.putExtra("pid", pid[position]);                                  //상대약속번호
                 startActivity(intent);
             }
         });
@@ -133,30 +124,23 @@ public class MainActivity extends Activity {
         try{
             JSONObject jsonObject = new JSONObject(myJSON);
             peoples = jsonObject.getJSONArray("response");
+            id=new String[peoples.length()];
+            otherphonenumber=new String[peoples.length()];
+            endweekend=new String[peoples.length()];
+            pid=new String[peoples.length()];
             //JSON 배열 길이만큼 반복문을 실행
             while(count < peoples.length()){
+                System.out.println(peoples.length());
                 JSONObject object = peoples.getJSONObject(count);
                 id[count] = object.getString("id");
                 otherphonenumber[count] = object.getString("otherphonenumber");
-                text[count] = object.getString("text");
                 endweekend[count] = object.getString("endweekend");
-                phour[count] = object.getString("phour");
-                pmin[count] = object.getString("pmin");
-                agreement[count] = object.getString("agreement");
-                status[count] = object.getString("status");
                 pid[count] = object.getString("pid");
                 HashMap<String, String> persons = new HashMap<>();
 
-                System.out.println(otherphonenumber[count]);
-                System.out.println("1");
                 persons.put("id", id[count]);
                 persons.put("otherphonenumber", otherphonenumber[count]);
-                persons.put("text", text[count]);
                 persons.put("endweekend", endweekend[count]);
-                persons.put("phour", phour[count]);
-                persons.put("pmin", pmin[count]);
-                persons.put("agreement", agreement[count]);
-                persons.put("status", status[count]);
                 persons.put("pid", pid[count]);
 
                 personList.add(persons);
@@ -212,12 +196,22 @@ public class MainActivity extends Activity {
     //뒤로가기 버튼 클릭 시 동작 함수
     @Override
     public void onBackPressed() {
-        long currentTime = System.currentTimeMillis();
-        if((currentTime - previousTime) <= INTERVAL_TIME) {
-            super.onBackPressed();
-        } else {
-            previousTime = currentTime;
-            Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        //1번째 백버튼 클릭
+        if(System.currentTimeMillis()>backKeyPressedTime+2000){
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "한번 더 누르시면 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
+        }
+        //2번째 백버튼 클릭 (종료)
+        else{
+            AppFinish();
         }
     }
+
+    //앱종료
+    public void AppFinish(){
+        finish();
+        System.exit(0);
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
 }

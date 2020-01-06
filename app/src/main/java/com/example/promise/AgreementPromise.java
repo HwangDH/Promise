@@ -13,19 +13,20 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
 public class AgreementPromise extends AppCompatActivity {
-    String ptext;
+    String userphonenumber, id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement_promise);
 
         Intent intent = getIntent();
-        ptext = intent.getStringExtra("ptext");
-
-        sendPromise(ptext);
+        userphonenumber = intent.getStringExtra("userphonenumber");
+        id = intent.getStringExtra("id");//상대 약속번호
+        sendPromise();
     }
 
-    public void sendPromise(final  String ptext){
+    public void sendPromise(){
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -48,8 +49,7 @@ public class AgreementPromise extends AppCompatActivity {
                 }
             }
         };
-
-        AgreementPromise_validateRequest ValidateRequest = new AgreementPromise_validateRequest(ptext, responseListener);
+        AgreementPromise_validateRequest ValidateRequest = new AgreementPromise_validateRequest(userphonenumber, id, responseListener);
         RequestQueue queue = Volley.newRequestQueue(AgreementPromise.this);
         queue.add(ValidateRequest);
     }

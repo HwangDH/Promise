@@ -35,17 +35,25 @@
         <TextView
             android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:text="이름"
+            android:text="상대번호"
             android:textSize="20dp"
             android:gravity="center">
         </TextView>
 
         <EditText
-            android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:id="@+id/otherphonenumber"
+            android:layout_width="215dp"
             android:layout_height="wrap_content"
-            android:textSize="20dp">
+            android:textSize="20dp"
+            android:inputType="number">
         </EditText>
+
+        <Button
+            android:id="@+id/addressbook"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="주소록 불러오기">
+        </Button>
 
     </LinearLayout>
 
