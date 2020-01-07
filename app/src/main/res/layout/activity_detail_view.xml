@@ -215,17 +215,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="확인">
-        </Button>
-
-        <Button
             android:id="@+id/btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="약속승인">
+        </Button>
+
+        <Button
+            android:id="@+id/btn5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="약속승인취소">
         </Button>
 
         <Button
@@ -240,6 +240,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="약속삭제">
+        </Button>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/line10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="확인">
         </Button>
 
     </LinearLayout>

@@ -12,22 +12,23 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-public class AgreementPromise extends AppCompatActivity {
+public class AgreementCancel extends AppCompatActivity {
+
     String userphonenumber, id, otherphonenumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agreement_promise);
+        setContentView(R.layout.activity_agreement_cancel);
 
         Intent intent = getIntent();
         userphonenumber = intent.getStringExtra("userphonenumber");
-        id = intent.getStringExtra("id");//상대 약속번호
-        otherphonenumber = intent.getStringExtra("id");//상대 약속번호
-        sendPromise();
+        id = intent.getStringExtra("id");//나의 약속번호
+        otherphonenumber= intent.getStringExtra("otherphonenumber");
+        agreement_cancel();
     }
 
-    public void sendPromise(){
+    public void agreement_cancel(){
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -35,13 +36,13 @@ public class AgreementPromise extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean success = jsonObject.getBoolean("success");
                     if(success){
-                        Toast.makeText(AgreementPromise.this, "승인 완료", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(AgreementPromise.this,MainActivity.class);
+                        Toast.makeText(AgreementCancel.this, "승인 취소 완료", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(AgreementCancel.this,MainActivity.class);
                         startActivity(intent);
                     }
                     else{
-                        Toast.makeText(AgreementPromise.this, "승인 오류 발생", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(AgreementPromise.this,MainActivity.class);
+                        Toast.makeText(AgreementCancel.this, "승인 취소 오류 발생", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(AgreementCancel.this,MainActivity.class);
                         startActivity(intent);
                     }
                 }catch(Exception e){
@@ -49,9 +50,8 @@ public class AgreementPromise extends AppCompatActivity {
                 }
             }
         };
-        AgreementPromise_validateRequest ValidateRequest = new AgreementPromise_validateRequest(userphonenumber, id, otherphonenumber,responseListener);
-        RequestQueue queue = Volley.newRequestQueue(AgreementPromise.this);
+        AgreementCancel_validateRequest ValidateRequest = new AgreementCancel_validateRequest(userphonenumber, id, otherphonenumber, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(AgreementCancel.this);
         queue.add(ValidateRequest);
     }
-
 }

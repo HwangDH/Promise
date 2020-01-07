@@ -1,7 +1,6 @@
 package com.example.promise;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,27 +9,29 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class DetailView extends AppCompatActivity {
-    Button btn1,btn2, btn3, btn4;
+    Button btn1,btn2, btn3, btn4, btn5;
     TextView name, date, time, txt1, txt2, txt3, txt4;
     AlertDialog alertDialog;
-    String id, userphonenumber, otherphonenumber, text, endweekend, phour, pmin, agreement, agreement1, status, pid;
+    String id, userphonenumber, otherphonenumber, text, endweekend, restweek, agreement, agreement1, status, pid;
+    String syear, smonth, sdate, shour, smin;
+    int sshour, ssmin, eehour, eemin, ssdate, eedate;
+    int length;
     long backKeyPressedTime;
 
     String myJSON;
@@ -48,6 +49,7 @@ public class DetailView extends AppCompatActivity {
         btn2 = (Button)findViewById(R.id.btn2); //승인버튼
         btn3 = (Button)findViewById(R.id.btn3); //수정버튼
         btn4 = (Button)findViewById(R.id.btn4); //삭제버튼
+        btn5 = (Button)findViewById(R.id.btn5); //약속승인버튼 취소
         name = (TextView)findViewById(R.id.name);   //이름
         date = (TextView)findViewById(R.id.Date);   //날짜
         time = (TextView)findViewById(R.id.Time);   //시간
@@ -129,6 +131,7 @@ public class DetailView extends AppCompatActivity {
                             //intent.putExtra("userphonenumber", userphonenumber);
                             //intent.putExtra("id", id);
                             intent.putExtra("userphonenumber", userphonenumber);
+                            intent.putExtra("otherphonenumber", otherphonenumber);
                             intent.putExtra("id", id);
                             startActivity(intent);
                         }
@@ -198,6 +201,42 @@ public class DetailView extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (agreement.equals("1")) {
+                    alertDialog = new android.app.AlertDialog.Builder(DetailView.this).create();
+                    alertDialog.setTitle("약속 승인취소");
+                    alertDialog.setMessage("약속을 승인을 취소 하시겠습니까?");
+                    alertDialog.setCancelable(false);
+
+                    //취소 버튼 클릭 시
+                    alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    //확인 버튼 클릭 시
+                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(DetailView.this, AgreementCancel.class);
+                            intent.putExtra("userphonenumber", userphonenumber);
+                            intent.putExtra("id", id);
+                            intent.putExtra("otherphonenumber", otherphonenumber);
+                            startActivity(intent);
+                        }
+                    });
+                    alertDialog.show();
+                }
+                else{
+                    Toast.makeText(DetailView.this, "이미 승인되지 않은 상태입니다.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     //데이터베이스에 가져온 데이터를 저장하는 메소드
@@ -213,19 +252,123 @@ public class DetailView extends AppCompatActivity {
                 otherphonenumber = object.getString("otherphonenumber");
                 text = object.getString("text");
                 endweekend = object.getString("endweekend");
-                phour = object.getString("phour");
-                pmin = object.getString("pmin");
+                restweek = object.getString("restweek");
                 agreement = object.getString("agreement");
                 agreement1 = object.getString("agreement1");
-                //System.out.println("agreement1 : "+ agreement1);
                 status = object.getString("status");
                 pid = object.getString("pid");
                 HashMap<String, String> persons = new HashMap<>();
-                //count++;
-                //System.out.println(count);
+                length = restweek.length();
+                System.out.println("STATUS"+status);
+
+                if(status.equals("1")){
+                    txt4.setText("마감기한 초과");
+                }
+                else {
+                    //year가 4자리
+                    if (length > 13) {
+                        syear = restweek.substring(0, 4);
+                        smonth = restweek.substring(4, 6);
+                        sdate = restweek.substring(6, 8);
+                        shour = restweek.substring(8, 10);
+                        smin = restweek.substring(10, 12);
+                    }
+                    //year가 3자리
+                    else if (length > 12) {
+                        syear = restweek.substring(0, 3);
+                        smonth = restweek.substring(3, 5);
+                        sdate = restweek.substring(5, 7);
+                        shour = restweek.substring(7, 9);
+                        smin = restweek.substring(9, 11);
+                    }
+                    //year가 2자리
+                    else if (length > 11) {
+                        syear = restweek.substring(0, 2);
+                        smonth = restweek.substring(2, 4);
+                        sdate = restweek.substring(4, 6);
+                        shour = restweek.substring(6, 8);
+                        smin = restweek.substring(8, 10);
+                    }
+                    //year가 1자리
+                    else if (length > 10) {
+                        syear = restweek.substring(0, 1);
+                        smonth = restweek.substring(1, 3);
+                        sdate = restweek.substring(3, 5);
+                        shour = restweek.substring(5, 7);
+                        smin = restweek.substring(7, 9);
+                    }
+                    //month로 시작
+                    else if (length > 9) {
+                        syear = "0";
+                        smonth = restweek.substring(0, 2);
+                        sdate = restweek.substring(2, 4);
+                        shour = restweek.substring(4, 6);
+                        smin = restweek.substring(6, 8);
+                    } else if (length > 8) {
+                        syear = "0";
+                        smonth = restweek.substring(0, 1);
+                        sdate = restweek.substring(1, 3);
+                        shour = restweek.substring(3, 5);
+                        smin = restweek.substring(5, 7);
+                    }
+                    //date로 시작
+                    else if (length > 7) {
+                        syear = "0";
+                        smonth = "0";
+                        sdate = restweek.substring(0, 2);
+                        shour = restweek.substring(2, 4);
+                        smin = restweek.substring(4, 6);
+                    } else if (length > 6) {
+                        syear = "0";
+                        smonth = "0";
+                        sdate = restweek.substring(0, 1);
+                        shour = restweek.substring(1, 3);
+                        smin = restweek.substring(3, 5);
+                    }
+                    //hour로 시작
+                    else if (length > 5) {
+                        syear = "0";
+                        smonth = "0";
+                        sdate = "0";
+                        shour = restweek.substring(0, 2);
+                        smin = restweek.substring(2, 4);
+                    } else if (length > 4) {
+                        syear = "0";
+                        smonth = "0";
+                        sdate = "0";
+                        shour = restweek.substring(0, 1);
+                        smin = restweek.substring(1, 3);
+                    }
+                    //min로 시작
+                    else if (length > 3) {
+                        syear = "0";
+                        smonth = "0";
+                        sdate = "0";
+                        shour = "0";
+                        smin = restweek.substring(0, 2);
+                    }
+                    else if (length > 2) {
+                        syear = "0";
+                        smonth = "0";
+                        sdate = "0";
+                        shour = "0";
+                        smin = restweek.substring(0, 1);
+                    }
+                    ssdate = Integer.parseInt(endweekend.substring(8,10));
+                    eedate = Integer.parseInt(sdate);
+                    sshour = Integer.parseInt(shour);
+                    ssmin = Integer.parseInt(smin);
+                    eehour = Integer.parseInt(endweekend.substring(11,13));
+                    eemin = Integer.parseInt(endweekend.substring(14,16));
+                    if(sshour > 24){
+
+                    }
+                    txt4.setText(syear+"년"+smonth+"개월"+sdate+"일"+shour+"시간"+smin+"분");
+                }
+
                 name.setText(otherphonenumber);
-                date.setText(endweekend);
-                time.setText(phour+"시"+pmin+"분");
+                date.setText(endweekend.substring(0,10));
+                time.setText(endweekend.substring(11,13)+"시"+endweekend.substring(14,16)+"분");
                 txt1.setText(text);
 
                 //나의 약속승인여부
@@ -243,8 +386,6 @@ public class DetailView extends AppCompatActivity {
                 else{
                     txt3.setText("승인O");
                 }
-
-                txt4.setText(status);       //마감 여부
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -285,6 +426,14 @@ public class DetailView extends AppCompatActivity {
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
     }
+
+    public String doYearMonthDay() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm", Locale.KOREA);
+        Date date = new Date();
+        String currentDate = formatter.format(date);
+        return currentDate;
+    }
+
 
     @Override
     public void onBackPressed() {

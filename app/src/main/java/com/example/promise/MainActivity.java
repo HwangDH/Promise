@@ -30,7 +30,7 @@ import java.util.HashMap;
 
 public class MainActivity extends Activity {
     TextView name, date;
-    Button btn1, btn2;
+    Button btn1;
     AlertDialog alertDialog;
     ListView listview;
     //데이터베이스에서 데이터 가져오기 위한 변수
@@ -41,8 +41,6 @@ public class MainActivity extends Activity {
     int count = 0;  //컬럼 수 계산
     SharedPreferences shared;
     //뒤로가기 연속 클릭 시간 계산 변수
-    final long INTERVAL_TIME = 1000;
-    long previousTime = 0;
     String userphonenumber;
     String [] id;
     String [] otherphonenumber;
@@ -130,7 +128,6 @@ public class MainActivity extends Activity {
             pid=new String[peoples.length()];
             //JSON 배열 길이만큼 반복문을 실행
             while(count < peoples.length()){
-                System.out.println(peoples.length());
                 JSONObject object = peoples.getJSONObject(count);
                 id[count] = object.getString("id");
                 otherphonenumber[count] = object.getString("otherphonenumber");
