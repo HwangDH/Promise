@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
@@ -194,7 +195,11 @@ public class DetailView extends AppCompatActivity {
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DetailView.this, AgreementPromise.class);
+                        Intent intent = new Intent(DetailView.this, PromiseRemove.class);
+                        intent.putExtra("userphonenumber", userphonenumber);
+                        intent.putExtra("otherphonenumber", otherphonenumber);
+                        intent.putExtra("id", id);
+                        intent.putExtra("pid", pid);
                         startActivity(intent);
                     }
                 });

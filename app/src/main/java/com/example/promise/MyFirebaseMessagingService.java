@@ -43,7 +43,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
-            sendNotification( title, body );
+            String id = remoteMessage.getData().get("id");
+            String otherphonenumber = remoteMessage.getData().get("otherphonenumber");
+            String text = remoteMessage.getData().get("text");
+            String endweekend = remoteMessage.getData().get("endweekend");
+            String restweek = remoteMessage.getData().get("restweek");
+            String status = remoteMessage.getData().get("status");
+            String pid = remoteMessage.getData().get("pid");
+
+            sendNotification( title, body, id, otherphonenumber, text, endweekend, restweek, status, pid );
             handleNow();
         }
         // Check if message contains a notification payload.
@@ -81,7 +89,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "here ! sendRegistrationToServer! token is " + token);
     }
 
-    private void sendNotification(String title, String body) {
+    private void sendNotification(String title, String body, String id, String otherphonenumber, String text, String endweekend, String restweek, String status, String pid) {
         if (title == null){
             //제목이 없는 payload이면       php에서 보낼때 이미 한번 점검했음.
             title = "공지사항"; //기본제목을 적어 주자.
@@ -99,15 +107,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(new NotificationChannel("default", "기본 채널", NotificationManager.IMPORTANCE_DEFAULT));
         }
 
-        Intent intent= new Intent(this, MainActivity.class);
-
-        PendingIntent pending= PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        builder.setContentIntent(pending);   //PendingIntent 설정
-
-        builder.setAutoCancel(true);         //클릭하면 자동으로 알림 삭제
-        // id값은
-        // 정의해야하는 각 알림의 고유한 int값
-        notificationManager.notify(1, builder.build());
+        if(body.equals("약속삭제요청")) {
+            shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
+            String userphonenumber = shared.getString("userphonenumber", "");
+            Intent intent = new Intent(this, RemoveRequest.class);
+            intent.putExtra("id", id);
+            intent.putExtra("userphonenumber", userphonenumber);
+            intent.putExtra("otherphonenumber", otherphonenumber);
+            intent.putExtra("text", text);
+            intent.putExtra("endweekend", endweekend);
+            intent.putExtra("restweek", restweek);
+            intent.putExtra("status", status);
+            intent.putExtra("pid", pid);
+            PendingIntent pending = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pending);   //PendingIntent 설정
+            builder.setAutoCancel(true);         //클릭하면 자동으로 알림 삭제
+            // id값은
+            // 정의해야하는 각 알림의 고유한 int값
+            notificationManager.notify(1, builder.build());
+        }
+        else{
+            Intent intent = new Intent(this, MainActivity.class);
+            PendingIntent pending = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pending);   //PendingIntent 설정
+            builder.setAutoCancel(true);         //클릭하면 자동으로 알림 삭제
+            // id값은
+            // 정의해야하는 각 알림의 고유한 int값
+            notificationManager.notify(1, builder.build());
+        }
     }
 }

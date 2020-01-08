@@ -17,7 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AgreementCancel"></activity>
+        <activity android:name=".nothingactivity"></activity>
+        <activity android:name=".RemoveRequest" />
+        <activity android:name=".PromiseRemove" />
+        <activity android:name=".AgreementCancel" />
         <activity android:name=".AgreementPromise" />
         <activity android:name=".SendSMS" />
         <activity android:name=".DetailView" />

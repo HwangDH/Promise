@@ -12,22 +12,24 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-public class AgreementPromise extends AppCompatActivity {
-    String userphonenumber, id, otherphonenumber;
+public class PromiseRemove extends AppCompatActivity {
+    String userphonenumber, otherphonenumber, id, pid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agreement_promise);
+        setContentView(R.layout.activity_promise_remove);
 
         Intent intent = getIntent();
         userphonenumber = intent.getStringExtra("userphonenumber");
-        id = intent.getStringExtra("id");//상대 약속번호
-        otherphonenumber = intent.getStringExtra("id");//상대 약속번호
-        sendPromise();
+        otherphonenumber = intent.getStringExtra("otherphonenumber");
+        id = intent.getStringExtra("id");
+        pid = intent.getStringExtra("pid");
+
+        RemovePromise();
     }
 
-    public void sendPromise(){
+    public void RemovePromise(){
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -35,13 +37,13 @@ public class AgreementPromise extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean success = jsonObject.getBoolean("success");
                     if(success){
-                        Toast.makeText(AgreementPromise.this, "승인 완료", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(AgreementPromise.this,MainActivity.class);
+                        Toast.makeText(PromiseRemove.this, "승인 완료", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(PromiseRemove.this,MainActivity.class);
                         startActivity(intent);
                     }
                     else{
-                        Toast.makeText(AgreementPromise.this, "승인 오류 발생", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(AgreementPromise.this,MainActivity.class);
+                        Toast.makeText(PromiseRemove.this, "승인 오류 발생", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(PromiseRemove.this,MainActivity.class);
                         startActivity(intent);
                     }
                 }catch(Exception e){
@@ -49,8 +51,8 @@ public class AgreementPromise extends AppCompatActivity {
                 }
             }
         };
-        AgreementPromise_validateRequest ValidateRequest = new AgreementPromise_validateRequest(userphonenumber, id, otherphonenumber,responseListener);
-        RequestQueue queue = Volley.newRequestQueue(AgreementPromise.this);
+        PromiseRemove_validateRequest ValidateRequest = new PromiseRemove_validateRequest(userphonenumber, otherphonenumber, id, pid,responseListener);
+        RequestQueue queue = Volley.newRequestQueue(PromiseRemove.this);
         queue.add(ValidateRequest);
     }
 }
