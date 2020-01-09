@@ -39,13 +39,6 @@
             android:text="약속 생성">
         </Button>
 
-        <Button
-            android:id="@+id/btn2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="약속 삭제 리스트">
-        </Button>
-
     </LinearLayout>
 
     <LinearLayout

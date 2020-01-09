@@ -17,14 +17,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".nothingactivity"></activity>
+        <activity android:name=".ChangeAgreement"></activity>
+        <activity android:name=".PromiseChange" />
+        <activity android:name=".nothingactivity" />
         <activity android:name=".RemoveRequest" />
         <activity android:name=".PromiseRemove" />
         <activity android:name=".AgreementCancel" />
         <activity android:name=".AgreementPromise" />
         <activity android:name=".SendSMS" />
         <activity android:name=".DetailView" />
-        <activity android:name=".ChangePromise" />
         <activity android:name=".CreatePromise" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />

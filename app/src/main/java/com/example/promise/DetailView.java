@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListAdapter;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
@@ -52,8 +51,8 @@ public class DetailView extends AppCompatActivity {
         btn4 = (Button)findViewById(R.id.btn4); //삭제버튼
         btn5 = (Button)findViewById(R.id.btn5); //약속승인버튼 취소
         name = (TextView)findViewById(R.id.name);   //이름
-        date = (TextView)findViewById(R.id.Date);   //날짜
-        time = (TextView)findViewById(R.id.Time);   //시간
+        date = (TextView)findViewById(R.id.date);   //날짜
+        time = (TextView)findViewById(R.id.time);   //시간
         txt1 = (TextView)findViewById(R.id.txt1);   //내용
         txt2 = (TextView)findViewById(R.id.txt2);   //나의 승인
         txt3 = (TextView)findViewById(R.id.txt3);   //상대 승인
@@ -166,7 +165,11 @@ public class DetailView extends AppCompatActivity {
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DetailView.this, ChangePromise.class);
+                        Intent intent = new Intent(DetailView.this, PromiseChange.class);
+                        intent.putExtra("id", id);
+                        intent.putExtra("userphonenumber", userphonenumber);
+                        intent.putExtra("otherphonenumber", otherphonenumber);
+                        intent.putExtra("pid", pid);
                         startActivity(intent);
                     }
                 });
@@ -263,8 +266,6 @@ public class DetailView extends AppCompatActivity {
                 status = object.getString("status");
                 pid = object.getString("pid");
                 HashMap<String, String> persons = new HashMap<>();
-                length = restweek.length();
-                System.out.println("STATUS"+status);
 
                 if(status.equals("1")){
                     txt4.setText("마감기한 초과");
@@ -359,15 +360,13 @@ public class DetailView extends AppCompatActivity {
                         shour = "0";
                         smin = restweek.substring(0, 1);
                     }
-                    ssdate = Integer.parseInt(endweekend.substring(8,10));
-                    eedate = Integer.parseInt(sdate);
-                    sshour = Integer.parseInt(shour);
-                    ssmin = Integer.parseInt(smin);
-                    eehour = Integer.parseInt(endweekend.substring(11,13));
-                    eemin = Integer.parseInt(endweekend.substring(14,16));
-                    if(sshour > 24){
+                    //ssdate = Integer.parseInt(endweekend.substring(8,10));
+                    //eedate = Integer.parseInt(sdate);
+                    //sshour = Integer.parseInt(shour);
+                    //ssmin = Integer.parseInt(smin);
+                    //eehour = Integer.parseInt(endweekend.substring(11,13));
+                    //eemin = Integer.parseInt(endweekend.substring(14,16));
 
-                    }
                     txt4.setText(syear+"년"+smonth+"개월"+sdate+"일"+shour+"시간"+smin+"분");
                 }
 

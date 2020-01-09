@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CreatePromise">
+    tools:context=".PromiseChange">
 
     <LinearLayout
         android:id="@+id/line1"
@@ -16,12 +16,11 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="약속생성 페이지"
-            android:textSize="30dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="약속수정 페이지"
             android:textColor="#000000"
-            android:gravity="center">
-        </TextView>
+            android:textSize="30dp"></TextView>
 
     </LinearLayout>
 
@@ -35,25 +34,18 @@
         <TextView
             android:layout_width="75dp"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:text="상대번호"
+            android:textSize="20dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="20dp"
             android:gravity="center">
         </TextView>
-
-        <EditText
-            android:id="@+id/otherphonenumber"
-            android:layout_width="215dp"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:inputType="number">
-        </EditText>
-
-        <Button
-            android:id="@+id/addressbook"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="주소록 불러오기">
-        </Button>
 
     </LinearLayout>
 
@@ -150,9 +142,11 @@
             android:background="@drawable/round_corner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="약속 보내기">
+            android:text="약속 수정 요청">
         </Button>
 
     </LinearLayout>
+
+
 
 </LinearLayout>

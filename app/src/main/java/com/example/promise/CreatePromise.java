@@ -53,8 +53,8 @@ public class CreatePromise extends AppCompatActivity {
         btn1 = (Button)findViewById(R.id.btn1);
         btn2 = (Button)findViewById(R.id.addressbook);
         otherphonenumber = (EditText)findViewById(R.id.otherphonenumber);
-        Date = (EditText)findViewById(R.id.Date);
-        Time = (EditText) findViewById(R.id.Time);
+        Date = (EditText)findViewById(R.id.date);
+        Time = (EditText) findViewById(R.id.time);
         txt1 = (EditText)findViewById(R.id.txt1);
 
         Intent intent = getIntent();
