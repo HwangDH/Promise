@@ -15,8 +15,8 @@ public class PromiseChange_validate extends StringRequest {
         super(Request.Method.POST, URL, listener, null);//해당 URL에 POST방식으로 파마미터들을 전송함
         parameters = new HashMap<>();
         parameters.put("id", id);
-        parameters.put("userphonenumber", userphonenumber);
-        parameters.put("otherphonenumber", otherphonenumber);
+        parameters.put("userphonenumber", otherphonenumber);
+        parameters.put("otherphonenumber", userphonenumber);
         parameters.put("endweekend", date);
         parameters.put("hour", hour);
         parameters.put("min", min);

@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-
 public class CreatePromise extends AppCompatActivity {
     Button btn1, btn2;
     EditText otherphonenumber, Date, Time, txt1;
@@ -98,7 +97,6 @@ public class CreatePromise extends AppCompatActivity {
             }
         });
 
-
         //약속 보내기 버튼 클릭 시
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +165,6 @@ public class CreatePromise extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     private void updateLabel() {
         String myFormat = "yyyyMMdd";    // 출력형식   2018/11/28

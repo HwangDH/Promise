@@ -173,4 +173,9 @@ public class RemoveRequest extends AppCompatActivity {
             queue.add(ValidateRequest);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
 }

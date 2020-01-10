@@ -169,4 +169,9 @@ public class PromiseChange extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(PromiseChange.this);
         queue.add(ValidateRequest);
     }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
 }

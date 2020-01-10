@@ -54,6 +54,9 @@ public class ChangeAgreement extends AppCompatActivity {
         time.setText(endweekend.substring(8,10)+"시"+endweekend.substring(10,12)+"분");
         txt1.setText(text);
 
+        if(endweekend.length() == 13){
+            endweekend = endweekend +"0";
+        }
         //약속 수정 확인 버튼
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +122,7 @@ public class ChangeAgreement extends AppCompatActivity {
 
     public void removerequest(int state) {
         if (state == 1) {
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
+             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {
@@ -168,5 +171,10 @@ public class ChangeAgreement extends AppCompatActivity {
             RequestQueue queue = Volley.newRequestQueue(ChangeAgreement.this);
             queue.add(ValidateRequest);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }

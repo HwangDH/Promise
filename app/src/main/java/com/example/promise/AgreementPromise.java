@@ -53,4 +53,9 @@ public class AgreementPromise extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(AgreementPromise.this);
         queue.add(ValidateRequest);
     }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
 }
