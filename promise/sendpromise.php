@@ -42,26 +42,13 @@
 	$pmin = $_POST['min'];
 	$total = $endweekend.$phour.$pmin."00";
 	
-	$count = id_count($userphonenumber);
-	
 	$con = mysqli_connect($host,$user,$pass,$dbname);
 	
 	if(mysqli_connect_error($con)){		
 		echo "DB connect error : ". mysqli_connect_error();
 	}
+			
 	else{
-		$sql = "insert into Puser_$userphonenumber( id, userphonenumber, otherphonenumber, text, endweekend, agreement, status) values('".$count."', '".$userphonenumber."','".$otherphonenumber."','".$text."','".$total."', '1', '0');";
-		echo $sql;
-		if(mysqli_query($con,$sql)){
-			$state = "success";
-		}
-		else{
-			$state = "failed";
-			//echo $state;
-		}
-	}
-		
-	if($state = "success"){
 		$sql2 = "select token from Puser_list where userphonenumber = '$otherphonenumber';";
 		$result = mysqli_query($con, $sql2); 
 		$result2 = mysqli_query($con, $sql2); 
@@ -74,6 +61,17 @@
 				//echo $token[0];
 			}
 			
+			$count = id_count($userphonenumber);
+			$sql = "insert into Puser_$userphonenumber( id, userphonenumber, otherphonenumber, text, endweekend, agreement, status) values('".$count."', '".$userphonenumber."','".$otherphonenumber."','".$text."','".$total."', '1', '0');";
+			//echo $sql;
+			if(mysqli_query($con,$sql)){
+				$response["success"] = true;
+			}
+			else{
+				$response["success"] = false;
+				//echo $state;
+			}
+
 			$count2 = id_count($otherphonenumber);
 			//echo $count2;
 			
@@ -88,15 +86,12 @@
 				$response["success"] = true;
 			}
 			else{
-				$response["success"] = "false";
+				$response["success"] = false;
 			}
 		}
-		else {
-			$response["success"] = "false";
+		else{
+			$response["success"] = false;
 		}
-	}
-	else{
-		$response["success"] = "false";
 	}
 	
 	echo json_encode($response);		
