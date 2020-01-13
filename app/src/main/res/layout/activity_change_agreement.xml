@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ChangeAgreement">
+    tools:context="com.promise.promising.ChangeAgreement">
 
     <LinearLayout
         android:id="@+id/line1"

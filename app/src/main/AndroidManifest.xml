@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.promise">
+    package="com.android.promising">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -17,20 +12,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChangeAgreement"></activity>
-        <activity android:name=".PromiseChange" />
-        <activity android:name=".nothingactivity" />
-        <activity android:name=".RemoveRequest" />
-        <activity android:name=".PromiseRemove" />
-        <activity android:name=".AgreementCancel" />
-        <activity android:name=".AgreementPromise" />
-        <activity android:name=".SendSMS" />
-        <activity android:name=".DetailView" />
-        <activity android:name=".CreatePromise" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".Login" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SplashScreen">
+        <activity android:name="com.promise.promising.SendKakaoMessage">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/kakao_scheme"
+                    android:host="@string/kakaolink_host" />
+            </intent-filter>
+        </activity>
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
+        <activity android:name="com.android.promising.com.promise.promising.ChangeAgreement" />
+        <activity android:name="com.android.promising.com.promise.promising.PromiseChange" />
+        <activity android:name="com.android.promising.com.promise.promising.nothingactivity" />
+        <activity android:name="com.android.promising.com.promise.promising.RemoveRequest" />
+        <activity android:name="com.android.promising.com.promise.promising.PromiseRemove" />
+        <activity android:name="com.android.promising.com.promise.promising.AgreementCancel" />
+        <activity android:name="com.android.promising.com.promise.promising.AgreementPromise" />
+        <activity android:name="com.android.promising.com.promise.promising.SendSMS" />
+        <activity android:name="com.android.promising.com.promise.promising.DetailView" />
+        <activity android:name="com.android.promising.com.promise.promising.CreatePromise" />
+        <activity android:name="com.android.promising.com.promise.promising.SignUp" />
+        <activity android:name="com.android.promising.com.promise.promising.Login" />
+        <activity android:name="com.android.promising.com.promise.promising.MainActivity" />
+        <activity android:name="com.android.promising.com.promise.promising.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +48,7 @@
         </activity>
 
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name="com.android.promising.com.promise.promising.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
