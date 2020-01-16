@@ -384,6 +384,7 @@ public class DetailView extends AppCompatActivity {
                 }
                 else{
                     txt2.setText("승인O");
+                    btn2.setEnabled(false);
                 }
 
                 //상대 승인여부

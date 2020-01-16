@@ -44,14 +44,16 @@ public class SendKakaoMessage extends AppCompatActivity {
     }
 
     private void sendLink(){
-
-        TextTemplate params = TextTemplate.newBuilder("Text", LinkObject.newBuilder().setWebUrl("https://developers.kakao.com").setMobileWebUrl("https://developers.kakao.com").build()).setButtonTitle("This is button").build();
+        String templateId = "20176";
+        Map<String, String> templateArgs = new HashMap<String, String>();
+        templateArgs.put("template_arg1", "value1");
+        templateArgs.put("template_arg2", "value2");
 
         Map<String, String> serverCallbackArgs = new HashMap<String, String>();
         serverCallbackArgs.put("user_id", "${current_user_id}");
         serverCallbackArgs.put("product_id", "${shared_product_id}");
 
-        KakaoLinkService.getInstance().sendDefault(this, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+        KakaoLinkService.getInstance().sendCustom(this, templateId, templateArgs, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
             @Override
             public void onFailure(ErrorResult errorResult) {
                 Logger.getLogger(errorResult.toString());

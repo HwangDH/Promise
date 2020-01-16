@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ public class SignUp extends AppCompatActivity {
     TextView signup, already;
     Button btn1, btn2;
     RadioGroup radioGroup1, radioGroup2, radioGroup3;
-    String number = "1234";//인증번호
+    String number = "";//인증번호
     String token;
     String phone_cert = "0";
     String agreement1="0", agreement2="0", agreement3="0";
@@ -76,7 +77,7 @@ public class SignUp extends AppCompatActivity {
                         token = task.getResult().getToken();
 
                         //Toast.makeText(Signup.this, token, Toast.LENGTH_SHORT).show();
-                        System.out.println(token);
+                        //System.out.println(token);
                     }
                 });
 
@@ -124,6 +125,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String user_phonenumber = userphonenumber.getText().toString();
+
                 if (user_phonenumber.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                     alertdialog = builder.setMessage("핸드폰 번호를 입력해주세요.")
@@ -139,14 +141,15 @@ public class SignUp extends AppCompatActivity {
                         public void onResponse(String response) {
                             try {
                                 JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
-
-                                if (success) {//사용할 수 있는 아이디라면
+                                String success = jsonResponse.getString("success");
+                                number = success;
+                                if (!success.isEmpty()) {//사용할 수 있는 아이디라면
                                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                                    alertdialog = builder.setMessage("인증 번호 : " + number)
+                                    alertdialog = builder.setMessage("인증 번호가 전송되었습니다.")
                                             .setPositiveButton("확인", null)
                                             .create();
                                     alertdialog.show();
+                                    btn1.setActivated(false);
                                     validate = true;//검증완료
                                 } else {//사용할 수 없는 아이디라면`
                                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
@@ -183,6 +186,7 @@ public class SignUp extends AppCompatActivity {
                             .setPositiveButton("확인", null)
                             .create();
                     alertdialog.show();
+                    btn2.setEnabled(false);
                 }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
@@ -265,12 +269,10 @@ public class SignUp extends AppCompatActivity {
                         editor.putString("userpassword",spassword);
                         editor.putString("username",sname);
                         editor.commit();*/
-                        AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
-                        alertdialog = builder.setMessage("회원가입을 축하합니다.")
-                                .setPositiveButton("OK", null)
-                                .create();
-                        alertdialog.show();
-                        show();
+
+                        Toast.makeText(SignUp.this, "회원가입을 축하합니다.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignUp.this, Login.class);
+                        startActivity(intent);
                     }
                     else{
                         Toast.makeText(SignUp.this, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show();

@@ -26,20 +26,20 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
-        <activity android:name="com.android.promising.com.promise.promising.ChangeAgreement" />
-        <activity android:name="com.android.promising.com.promise.promising.PromiseChange" />
-        <activity android:name="com.android.promising.com.promise.promising.nothingactivity" />
-        <activity android:name="com.android.promising.com.promise.promising.RemoveRequest" />
-        <activity android:name="com.android.promising.com.promise.promising.PromiseRemove" />
-        <activity android:name="com.android.promising.com.promise.promising.AgreementCancel" />
-        <activity android:name="com.android.promising.com.promise.promising.AgreementPromise" />
-        <activity android:name="com.android.promising.com.promise.promising.SendSMS" />
-        <activity android:name="com.android.promising.com.promise.promising.DetailView" />
-        <activity android:name="com.android.promising.com.promise.promising.CreatePromise" />
-        <activity android:name="com.android.promising.com.promise.promising.SignUp" />
-        <activity android:name="com.android.promising.com.promise.promising.Login" />
-        <activity android:name="com.android.promising.com.promise.promising.MainActivity" />
-        <activity android:name="com.android.promising.com.promise.promising.SplashScreen">
+        <activity android:name="com.promise.promising.ChangeAgreement" />
+        <activity android:name="com.promise.promising.PromiseChange" />
+        <activity android:name="com.promise.promising.nothingactivity" />
+        <activity android:name="com.promise.promising.RemoveRequest" />
+        <activity android:name="com.promise.promising.PromiseRemove" />
+        <activity android:name="com.promise.promising.AgreementCancel" />
+        <activity android:name="com.promise.promising.AgreementPromise" />
+        <activity android:name="com.promise.promising.SendSMS" />
+        <activity android:name="com.promise.promising.DetailView" />
+        <activity android:name="com.promise.promising.CreatePromise" />
+        <activity android:name="com.promise.promising.SignUp" />
+        <activity android:name="com.promise.promising.Login" />
+        <activity android:name="com.promise.promising.MainActivity" />
+        <activity android:name="com.promise.promising.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,7 +48,7 @@
         </activity>
 
         <service
-            android:name="com.android.promising.com.promise.promising.MyFirebaseMessagingService"
+            android:name="com.promise.promising.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

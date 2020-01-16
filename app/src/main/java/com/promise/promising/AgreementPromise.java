@@ -24,11 +24,13 @@ public class AgreementPromise extends AppCompatActivity {
         Intent intent = getIntent();
         userphonenumber = intent.getStringExtra("userphonenumber");
         id = intent.getStringExtra("id");//상대 약속번호
-        otherphonenumber = intent.getStringExtra("id");//상대 약속번호
+        otherphonenumber = intent.getStringExtra("otherphonenumber");//상대 약속번호
         sendPromise();
     }
 
     public void sendPromise(){
+        System.out.println(userphonenumber);
+        System.out.println(otherphonenumber);
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
