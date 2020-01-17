@@ -8,14 +8,14 @@ import android.os.Bundle;
 
 import com.android.promising.R;
 
-
 public class SplashScreen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
+        CountTimer ct = new CountTimer();
+        ct.Count();
         Thread thread = new Thread() {
 
             @Override

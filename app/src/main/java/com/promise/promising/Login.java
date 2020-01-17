@@ -24,7 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import org.json.JSONObject;
-
+import com.promise.promising.CountTimer;
 import static com.android.volley.VolleyLog.TAG;
 
 public class Login extends Activity {
@@ -42,6 +42,7 @@ public class Login extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
 
         userphonenumber = (EditText) findViewById(R.id.userphonenumber);
