@@ -157,7 +157,7 @@ public class PromiseChange extends AppCompatActivity {
                     }
                     else{
                         Toast.makeText(PromiseChange.this, "사용자가 앱을 설치하지 않았습니다. 사용자에게 앱 설치를 요청페이지로 이동합니다..", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(PromiseChange.this,SendSMS.class);
+                        Intent intent = new Intent(PromiseChange.this,SendKakaoMessage.class);
                         startActivity(intent);
                     }
                 }catch(Exception e){

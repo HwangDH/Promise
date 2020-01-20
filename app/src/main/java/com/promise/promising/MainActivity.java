@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,7 +28,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.promise.promising.CountTimer;
 
 public class MainActivity extends Activity {
@@ -49,11 +62,15 @@ public class MainActivity extends Activity {
     String [] endweekend;
     String [] pid;
     long backKeyPressedTime;
+    static Boolean check= true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //CountTimer ct = new CountTimer();
+        //ct.Count();
 
         //약속상대와 날짜를 나타내기 위해 XML에서 가져온 변수
         name = (TextView)findViewById(R.id.name);
@@ -67,6 +84,18 @@ public class MainActivity extends Activity {
         //
         shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
         userphonenumber = shared.getString("userphonenumber", "");
+      /*  while(check) {
+            check = false;
+            TimerTask tt = new TimerTask() {
+                @Override
+                public void run() {
+                    alarm();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(tt, 0, 10000);
+        }*/
+        Count();
         //Intent intent = getIntent();
         //userphonenumber = intent.getStringExtra("userphonenumber");
 
@@ -79,7 +108,7 @@ public class MainActivity extends Activity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog = new android.app.AlertDialog.Builder(MainActivity.this).create();
+                alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                 alertDialog.setTitle("약속 생성");
                 alertDialog.setMessage("약속을 생성하시겠습니까?");
                 alertDialog.setCancelable(false);
@@ -213,4 +242,75 @@ public class MainActivity extends Activity {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
+
+   /* public void alarm() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+                        if (success) {
+                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "2", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(MainActivity.this, nothingactivity.class);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            ValidateRequest ValidateRequest = new ValidateRequest(userphonenumber, "1", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+            queue.add(ValidateRequest);
+    }*/
+
+    public void Count(){
+        ScheduledJob job = new ScheduledJob();
+        Timer jobScheduler = new Timer();
+        jobScheduler.scheduleAtFixedRate(job, 1000, 10000);
+        try{
+            Thread.sleep(20000);
+        }catch (InterruptedException e){
+            jobScheduler.cancel();
+        }
+    }
+
+    class ScheduledJob extends TimerTask {
+        public void run() {
+            //signup("01097753356");
+            System.out.println(count);
+            alarm();
+        }
+        public void alarm() {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+                        if (success) {
+                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "2", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(MainActivity.this, nothingactivity.class);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            ValidateRequest ValidateRequest = new ValidateRequest(userphonenumber, "1", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+            queue.add(ValidateRequest);
+    }
 }
+}
+

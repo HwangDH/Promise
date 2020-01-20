@@ -25,6 +25,7 @@ public class ValidateRequest extends StringRequest {
             parameters = new HashMap<>();
             parameters.put("userphonenumber", userphonenumber);
             parameters.put("trash", trash);
+            System.out.println();
         }
 
         @Override

@@ -1,6 +1,8 @@
 package com.promise.promising;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,14 +10,18 @@ import android.os.Bundle;
 
 import com.android.promising.R;
 
+import java.util.Calendar;
+
 public class SplashScreen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        CountTimer ct = new CountTimer();
-        ct.Count();
+        //Intent intent = new Intent(SplashScreen.this, ParsingService.class);
+        //startService(intent);
+        //CountTimer ct = new CountTimer();
+        //ct.Count();
         Thread thread = new Thread() {
 
             @Override

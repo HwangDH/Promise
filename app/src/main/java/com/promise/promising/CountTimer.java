@@ -37,12 +37,12 @@ class ScheduledJob extends TimerTask{
     public static int count=0;
 
     public void run() {
-        signup();
+        signup("01097753356");
         System.out.println(count);
         count++;
     }
 
-    public void signup() {
+    public void signup(String userphonenumber) {
         String url = "https://scv0319.cafe24.com/weall/promise/alarm.php";
         //RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
