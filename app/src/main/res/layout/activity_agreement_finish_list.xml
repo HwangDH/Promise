@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.promise.promising.MainActivity">
+    tools:context="com.promise.promising.AgreementFinishList">
 
     <RelativeLayout
         android:id="@+id/parent"

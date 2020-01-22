@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import org.json.JSONObject;
-import com.promise.promising.CountTimer;
 import static com.android.volley.VolleyLog.TAG;
 
 public class Login extends Activity {

@@ -1,12 +1,12 @@
 package com.promise.promising;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -28,10 +28,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
-public class MainActivity extends Activity {
+public class AgreementContinueList extends AppCompatActivity {
     TextView name, date;
     Button btn1, agreement_wait, agreement_continue, agreement_finish;
     AlertDialog alertDialog;
@@ -92,12 +91,12 @@ public class MainActivity extends Activity {
             Timer timer = new Timer();
             timer.schedule(tt, 0, 10000);
         }*/
-       // Count();
+        // Count();
         //Intent intent = getIntent();
         //userphonenumber = intent.getStringExtra("userphonenumber");
 
         //데이터베이스 호출
-        String url = "https://scv0319.cafe24.com/weall/promise/promiseinfo.php?userphonenumber="+userphonenumber+"";
+        String url = "https://scv0319.cafe24.com/weall/promise/agreecontinuelist.php?userphonenumber="+userphonenumber+"";
         //System.out.println(url);
         getData(url);
 
@@ -105,7 +104,7 @@ public class MainActivity extends Activity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog = new AlertDialog.Builder(AgreementContinueList.this).create();
                 alertDialog.setTitle("약속 생성");
                 alertDialog.setMessage("약속을 생성하시겠습니까?");
                 alertDialog.setCancelable(false);
@@ -122,7 +121,7 @@ public class MainActivity extends Activity {
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainActivity.this, CreatePromise.class);
+                        Intent intent = new Intent(AgreementContinueList.this, CreatePromise.class);
                         intent.putExtra("userphonenumber", userphonenumber);
                         startActivity(intent);
                     }
@@ -135,7 +134,7 @@ public class MainActivity extends Activity {
         agreement_wait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AgreementWaitList.class);
+                Intent intent = new Intent(AgreementContinueList.this, AgreementWaitList.class);
                 intent.putExtra("userphonenumber", userphonenumber);
                 startActivity(intent);
             }
@@ -145,7 +144,7 @@ public class MainActivity extends Activity {
         agreement_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AgreementContinueList.class);
+                Intent intent = new Intent(AgreementContinueList.this, CreatePromise.class);
                 intent.putExtra("userphonenumber", userphonenumber);
                 startActivity(intent);
             }
@@ -155,7 +154,7 @@ public class MainActivity extends Activity {
         agreement_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AgreementFinishList.class);
+                Intent intent = new Intent(AgreementContinueList.this, CreatePromise.class);
                 intent.putExtra("userphonenumber", userphonenumber);
                 startActivity(intent);
             }
@@ -201,7 +200,7 @@ public class MainActivity extends Activity {
                 personList.add(persons);
 
                 adapter = new SimpleAdapter(
-                        MainActivity.this, personList, R.layout.promise_list,
+                        AgreementContinueList.this, personList, R.layout.promise_list,
                         new String[] {"otherphonenumber", "endweekend"},
                         new int[] {R.id.name, R.id.date}
                 );
@@ -342,4 +341,3 @@ public class MainActivity extends Activity {
 
 
 }
-
