@@ -9,8 +9,8 @@ import java.util.Map;
 
 
 public class ValidateRequest extends StringRequest {
-    final static private String URL = "https://scv0319.cafe24.com/weall/promise/phone_check.php";
-    final static private String URL2 = "https://scv0319.cafe24.com/weall/promise/alarm.php";
+    final static private String URL = "https://appointment.kr/promise-php/promise/phone_check.php";
+    final static private String URL2 = "https://appointment.kr/promise-php/promise/alarm.php";
 
     private Map<String, String> parameters;
 
@@ -25,7 +25,6 @@ public class ValidateRequest extends StringRequest {
             parameters = new HashMap<>();
             parameters.put("userphonenumber", userphonenumber);
             parameters.put("trash", trash);
-            System.out.println();
         }
 
         @Override

@@ -96,8 +96,8 @@ public class AgreementWaitList extends AppCompatActivity {
         //userphonenumber = intent.getStringExtra("userphonenumber");
 
         //데이터베이스 호출
-        String url = "https://scv0319.cafe24.com/weall/promise/agreewaitlist.php?userphonenumber="+userphonenumber+"";
-        //System.out.println(url);
+        String url = "https://appointment.kr/promise-php/promise/agreewaitlist.php?userphonenumber="+userphonenumber+"";
+
         getData(url);
 
         //약속생성 버튼 클릭 시
@@ -130,11 +130,11 @@ public class AgreementWaitList extends AppCompatActivity {
             }
         });
 
-        //동의 대기 버튼 클릭 시
+        //약속 목록 버튼 클릭 시
         agreement_wait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AgreementWaitList.this, AgreementWaitList.class);
+                Intent intent = new Intent(AgreementWaitList.this, MainActivity.class);
                 intent.putExtra("userphonenumber", userphonenumber);
                 startActivity(intent);
             }
@@ -144,7 +144,7 @@ public class AgreementWaitList extends AppCompatActivity {
         agreement_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AgreementWaitList.this, CreatePromise.class);
+                Intent intent = new Intent(AgreementWaitList.this, AgreementContinueList.class);
                 intent.putExtra("userphonenumber", userphonenumber);
                 startActivity(intent);
             }
@@ -154,7 +154,7 @@ public class AgreementWaitList extends AppCompatActivity {
         agreement_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AgreementWaitList.this, CreatePromise.class);
+                Intent intent = new Intent(AgreementWaitList.this, AgreementFinishList.class);
                 intent.putExtra("userphonenumber", userphonenumber);
                 startActivity(intent);
             }

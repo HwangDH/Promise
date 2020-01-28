@@ -29,8 +29,6 @@ public class AgreementPromise extends AppCompatActivity {
     }
 
     public void sendPromise(){
-        System.out.println(userphonenumber);
-        System.out.println(otherphonenumber);
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

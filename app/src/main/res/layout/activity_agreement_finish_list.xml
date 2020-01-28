@@ -76,10 +76,18 @@
             android:layout_gravity="bottom">
 
             <Button
-                android:id="@+id/agreement_wait"
+                android:id="@+id/agreement_finish"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="약속 목록">
+            </Button>
+
+            <Button
+                android:id="@+id/agreement_wait"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:text="동의 대기">
             </Button>
 
@@ -87,15 +95,7 @@
                 android:id="@+id/agreement_continue"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="진행 중">
-            </Button>
-
-            <Button
-                android:id="@+id/agreement_finish"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="완료"
+                android:text="진행 중"
                 android:layout_marginLeft="100dp"
                 android:layout_alignParentRight="true">
             </Button>

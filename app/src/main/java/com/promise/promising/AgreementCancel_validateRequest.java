@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AgreementCancel_validateRequest extends StringRequest {
-    final static private String URL = "https://scv0319.cafe24.com/weall/promise/agreementcancel.php";
+    final static private String URL = "https://appointment.kr/promise-php/promise/agreementcancel.php";
     private Map<String, String> parameters;
     public AgreementCancel_validateRequest(String userphonenumber, String id, String otherphonenumber, Response.Listener<String> listener){
         super(Request.Method.POST, URL, listener, null);//해당 URL에 POST방식으로 파마미터들을 전송함

@@ -73,7 +73,6 @@ public class Login extends Activity {
                         }
                         // Get new Instance ID token
                         token = task.getResult().getToken();
-                        //System.out.println(token);
                     }
                 });
 

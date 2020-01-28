@@ -89,9 +89,20 @@ public class CreatePromise extends AppCompatActivity {
                         }*/
                         // EditText에 출력할 형식 지정
                         Time.setText(selectedHour + "시 " + selectedMinute + "분");
-                        System.out.println(selectedHour);
-                        phour = Integer.toString(selectedHour);
-                        pmin = Integer.toString(selectedMinute);
+                    
+                        if(selectedHour <10){
+                            phour = "0"+Integer.toString(selectedHour);
+                        }
+                        else {
+                            phour = Integer.toString(selectedHour);
+                        }
+
+                        if(selectedMinute < 10){
+                            pmin = "0"+Integer.toString(selectedMinute);
+                        }
+                        else{
+                            pmin = Integer.toString(selectedMinute);
+                        }
                     }
                 }, hour, minute, false); // true의 경우 24시간 형식의 TimePicker 출현
                 mTimePicker.setTitle("Select Time");

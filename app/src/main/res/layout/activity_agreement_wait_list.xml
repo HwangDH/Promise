@@ -80,7 +80,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="동의 대기">
+                android:text="약속 목록">
             </Button>
 
             <Button

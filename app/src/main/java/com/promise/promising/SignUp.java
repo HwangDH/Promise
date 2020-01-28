@@ -77,7 +77,7 @@ public class SignUp extends AppCompatActivity {
                         token = task.getResult().getToken();
 
                         //Toast.makeText(Signup.this, token, Toast.LENGTH_SHORT).show();
-                        //System.out.println(token);
+
                     }
                 });
 
@@ -290,7 +290,7 @@ public class SignUp extends AppCompatActivity {
 
     //회원가입이 이뤄지는 함수-PHP호출과 데이터저장
     public void signup(final String userphonenumber, final String phonecert, final String userpassword, final String username, final String agreement1, final String agreement2, final String agreement3,final String token){
-        String url = "https://scv0319.cafe24.com/weall/promise/signup.php";
+        String url = "https://appointment.kr/promise-php/promise/signup.php";
         RequestQueue requestQueue = Volley.newRequestQueue(SignUp.this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

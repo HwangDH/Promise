@@ -70,7 +70,7 @@ public class DetailView extends AppCompatActivity {
         otherphonenumber = intent.getStringExtra("otherphonenumber");   //상대방 폰번호
         pid = intent.getStringExtra("pid");                                 //상대약속번호
 
-        String url = "https://scv0319.cafe24.com/weall/promise/detailinfo.php?userphonenumber="+userphonenumber+"&otherphonenumber="+otherphonenumber+"&id="+id+"&pid="+pid+"";
+        String url = "https://appointment.kr/promise-php/promise/detailinfo.php?userphonenumber="+userphonenumber+"&otherphonenumber="+otherphonenumber+"&id="+id+"&pid="+pid+"";
         getData(url);
         //받아온 값들을 UI에 설정
         //name.setText(otherphonenumber);

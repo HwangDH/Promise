@@ -52,7 +52,6 @@ public class RemoveRequest extends AppCompatActivity {
         text =intent.getStringExtra("text");
         status = intent.getStringExtra("status");
         pid = intent.getStringExtra("pid");
-        System.out.println(userphonenumber);
         otherphonenumber.setText(otherphonenumber2);
         date.setText(endweekend);
         time.setText(endweekend.substring(11,13)+"시"+endweekend.substring(14,16)+"분");

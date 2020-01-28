@@ -97,8 +97,8 @@ public class MainActivity extends Activity {
         //userphonenumber = intent.getStringExtra("userphonenumber");
 
         //데이터베이스 호출
-        String url = "https://scv0319.cafe24.com/weall/promise/promiseinfo.php?userphonenumber="+userphonenumber+"";
-        //System.out.println(url);
+        String url = "https://appointment.kr/promise-php/promise/promiseinfo.php?userphonenumber="+userphonenumber+"";
+
         getData(url);
 
         //약속생성 버튼 클릭 시

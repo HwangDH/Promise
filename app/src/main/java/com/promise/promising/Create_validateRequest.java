@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Create_validateRequest extends StringRequest {
-    final static private String URL = "https://scv0319.cafe24.com/weall/promise/sendpromise.php";
+    final static private String URL = "https://appointment.kr/promise-php/promise/sendpromise.php";
     private Map<String, String> parameters;
 
     public Create_validateRequest(String userphonenumber,String otherphonenumber, String date, String hour, String min, String text, Response.Listener<String> listener){

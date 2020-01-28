@@ -91,7 +91,7 @@ public class PromiseChange extends AppCompatActivity {
                         }*/
                         // EditText에 출력할 형식 지정
                         time.setText(selectedHour + "시 " + selectedMinute + "분");
-                        System.out.println(selectedHour);
+
                         phour = Integer.toString(selectedHour);
                         if(selectedMinute <10){
                             pmin = "0"+Integer.toString(selectedMinute);
