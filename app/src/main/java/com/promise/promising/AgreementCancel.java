@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 public class AgreementCancel extends AppCompatActivity {
 
-    String userphonenumber, id, otherphonenumber;
+    String userphonenumber, id, otherphonenumber, pid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class AgreementCancel extends AppCompatActivity {
         userphonenumber = intent.getStringExtra("userphonenumber");
         id = intent.getStringExtra("id");//나의 약속번호
         otherphonenumber= intent.getStringExtra("otherphonenumber");
+        pid = intent.getStringExtra("pid");
         agreement_cancel();
     }
 
@@ -37,12 +38,12 @@ public class AgreementCancel extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean success = jsonObject.getBoolean("success");
                     if(success){
-                        Toast.makeText(AgreementCancel.this, "승인 취소 완료", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AgreementCancel.this, "약속 완료", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(AgreementCancel.this,MainActivity.class);
                         startActivity(intent);
                     }
                     else{
-                        Toast.makeText(AgreementCancel.this, "승인 취소 오류 발생", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AgreementCancel.this, "약속완료 오류 발생", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(AgreementCancel.this,MainActivity.class);
                         startActivity(intent);
                     }
@@ -51,7 +52,7 @@ public class AgreementCancel extends AppCompatActivity {
                 }
             }
         };
-        AgreementCancel_validateRequest ValidateRequest = new AgreementCancel_validateRequest(userphonenumber, id, otherphonenumber, responseListener);
+        AgreementCancel_validateRequest ValidateRequest = new AgreementCancel_validateRequest(userphonenumber, id, otherphonenumber, pid, responseListener);
         RequestQueue queue = Volley.newRequestQueue(AgreementCancel.this);
         queue.add(ValidateRequest);
     }

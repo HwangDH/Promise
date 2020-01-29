@@ -218,8 +218,8 @@ public class DetailView extends AppCompatActivity {
             public void onClick(View v) {
                 if (agreement.equals("1")) {
                     alertDialog = new android.app.AlertDialog.Builder(DetailView.this).create();
-                    alertDialog.setTitle("약속 승인취소");
-                    alertDialog.setMessage("약속을 승인을 취소 하시겠습니까?");
+                    alertDialog.setTitle("약속 완료");
+                    alertDialog.setMessage("약속을 완료 하시겠습니까?");
                     alertDialog.setCancelable(false);
 
                     //취소 버튼 클릭 시
@@ -238,13 +238,14 @@ public class DetailView extends AppCompatActivity {
                             intent.putExtra("userphonenumber", userphonenumber);
                             intent.putExtra("id", id);
                             intent.putExtra("otherphonenumber", otherphonenumber);
+                            intent.putExtra("pid", pid);
                             startActivity(intent);
                         }
                     });
                     alertDialog.show();
                 }
                 else{
-                    Toast.makeText(DetailView.this, "이미 승인되지 않은 상태입니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailView.this, "이미 약속이 완료된 상태입니다.", Toast.LENGTH_LONG).show();
                 }
             }
         });

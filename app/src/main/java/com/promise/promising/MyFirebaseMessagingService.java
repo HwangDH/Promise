@@ -45,7 +45,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
 
-            if(body.equals("약속수정요청")){
+            if(body.equals("약속수정요청") || body.equals("약속완료요쳥")) {
                 String id = remoteMessage.getData().get("id");
                 String otherphonenumber = remoteMessage.getData().get("otherphonenumber");
                 String text = remoteMessage.getData().get("text");
@@ -137,6 +137,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // 정의해야하는 각 알림의 고유한 int값
             notificationManager.notify(1, builder.build());
         }
+
         else{
             Intent intent = new Intent(this, MainActivity.class);
             PendingIntent pending = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -165,20 +166,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(new NotificationChannel("default", "기본 채널", NotificationManager.IMPORTANCE_DEFAULT));
         }
 
-        shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
-        String userphonenumber = shared.getString("userphonenumber", "");
-        Intent intent = new Intent(this, ChangeAgreement.class);
-        intent.putExtra("id", id);
-        intent.putExtra("userphonenumber", userphonenumber);
-        intent.putExtra("otherphonenumber", otherphonenumber);
-        intent.putExtra("text", text);
-        intent.putExtra("endweekend", endweekend);
-        intent.putExtra("pid", pid);
-        PendingIntent pending = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pending);   //PendingIntent 설정
-        builder.setAutoCancel(true);         //클릭하면 자동으로 알림 삭제
-        // id값은
-        // 정의해야하는 각 알림의 고유한 int값
-        notificationManager.notify(1, builder.build());
+        if(body.equals("악속수정요청")){
+            shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
+            String userphonenumber = shared.getString("userphonenumber", "");
+            Intent intent = new Intent(this, ChangeAgreement.class);
+            intent.putExtra("id", id);
+            intent.putExtra("userphonenumber", userphonenumber);
+            intent.putExtra("otherphonenumber", otherphonenumber);
+            intent.putExtra("text", text);
+            intent.putExtra("endweekend", endweekend);
+            intent.putExtra("pid", pid);
+            PendingIntent pending = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pending);   //PendingIntent 설정
+            builder.setAutoCancel(true);         //클릭하면 자동으로 알림 삭제
+            // id값은
+            // 정의해야하는 각 알림의 고유한 int값
+            notificationManager.notify(1, builder.build());
+        }
+        else{
+            shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
+            String userphonenumber = shared.getString("userphonenumber", "");
+            Intent intent = new Intent(this, AgreementFinish.class);
+            intent.putExtra("id", id);
+            intent.putExtra("userphonenumber", userphonenumber);
+            intent.putExtra("otherphonenumber", otherphonenumber);
+            intent.putExtra("text", text);
+            intent.putExtra("endweekend", endweekend);
+            intent.putExtra("pid", pid);
+            PendingIntent pending = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pending);   //PendingIntent 설정
+            builder.setAutoCancel(true);         //클릭하면 자동으로 알림 삭제
+            // id값은
+            // 정의해야하는 각 알림의 고유한 int값
+            notificationManager.notify(1, builder.build());
+        }
     }
 }

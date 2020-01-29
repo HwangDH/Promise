@@ -110,8 +110,8 @@ public class PromiseChange extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 alertDialog = new android.app.AlertDialog.Builder(PromiseChange.this).create();
-                alertDialog.setTitle("약속 삭제확인");
-                alertDialog.setMessage("약속을 삭제하시겠습니까?");
+                alertDialog.setTitle("약속 수정확인");
+                alertDialog.setMessage("약속을 수정하시겠습니까?");
                 alertDialog.setCancelable(false);
 
                 //취소 버튼 클릭 시

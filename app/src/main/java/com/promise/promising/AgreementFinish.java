@@ -20,7 +20,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-public class ChangeAgreement extends AppCompatActivity {
+public class AgreementFinish extends AppCompatActivity {
     TextView name, date, time, txt1;
     Button btn1, btn2;
     SharedPreferences shared;
@@ -30,41 +30,40 @@ public class ChangeAgreement extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_agreement);
-
+        setContentView(R.layout.activity_agreement_finish);
         shared = getSharedPreferences("Mypref", Context.MODE_PRIVATE);
         userphonenumber = shared.getString("userphonenumber", "");
 
-        name = (TextView)findViewById(R.id.name);
-        date = (TextView)findViewById(R.id.date);
-        time = (TextView)findViewById(R.id.time);
-        txt1 = (TextView)findViewById(R.id.txt1);
+        name = (TextView) findViewById(R.id.name);
+        date = (TextView) findViewById(R.id.date);
+        time = (TextView) findViewById(R.id.time);
+        txt1 = (TextView) findViewById(R.id.txt1);
 
-        btn1 = (Button)findViewById(R.id.btn1);
-        btn2 = (Button)findViewById(R.id.btn2);
+        btn1 = (Button) findViewById(R.id.btn1);
+        btn2 = (Button) findViewById(R.id.btn2);
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         otherphonenumber = intent.getStringExtra("otherphonenumber");
         endweekend = intent.getStringExtra("endweekend");
-        text =intent.getStringExtra("text");
+        text = intent.getStringExtra("text");
         pid = intent.getStringExtra("pid");
 
         name.setText(otherphonenumber);
-        date.setText(endweekend.substring(0,4)+"년"+endweekend.substring(4,6)+"월"+endweekend.substring(6,8)+"일");
-        time.setText(endweekend.substring(8,10)+"시"+endweekend.substring(10,12)+"분");
+        date.setText(endweekend.substring(0, 4) + "년" + endweekend.substring(4, 6) + "월" + endweekend.substring(6, 8) + "일");
+        time.setText(endweekend.substring(8, 10) + "시" + endweekend.substring(10, 12) + "분");
         txt1.setText(text);
 
-        if(endweekend.length() == 13){
-            endweekend = endweekend +"0";
+        if (endweekend.length() == 13) {
+            endweekend = endweekend + "0";
         }
         //약속 수정 확인 버튼
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog = new android.app.AlertDialog.Builder(ChangeAgreement.this).create();
-                alertDialog.setTitle("약속 수정 확인");
-                alertDialog.setMessage("약속을 수정하시겠습니까?");
+                alertDialog = new android.app.AlertDialog.Builder(AgreementFinish.this).create();
+                alertDialog.setTitle("약속완료 확인");
+                alertDialog.setMessage("약속을 완료하시겠습니까?");
                 alertDialog.setCancelable(false);
 
                 //취소 버튼 클릭 시
@@ -81,7 +80,7 @@ public class ChangeAgreement extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         state = 1;
                         removerequest(state);
-                        Intent intent = new Intent(ChangeAgreement.this, MainActivity.class);
+                        Intent intent = new Intent(AgreementFinish.this, MainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -93,9 +92,9 @@ public class ChangeAgreement extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog = new android.app.AlertDialog.Builder(ChangeAgreement.this).create();
-                alertDialog.setTitle("약속 승인 거절");
-                alertDialog.setMessage("약속 수정을 거절하시겠습니까?");
+                alertDialog = new android.app.AlertDialog.Builder(AgreementFinish.this).create();
+                alertDialog.setTitle("약속완료 거절");
+                alertDialog.setMessage("약속 완료를 거절하시겠습니까?");
                 alertDialog.setCancelable(false);
 
                 //취소 버튼 클릭 시
@@ -112,7 +111,7 @@ public class ChangeAgreement extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         state = 0;
                         removerequest(state);
-                        Intent intent = new Intent(ChangeAgreement.this, MainActivity.class);
+                        Intent intent = new Intent(AgreementFinish.this, MainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -123,32 +122,6 @@ public class ChangeAgreement extends AppCompatActivity {
 
     public void removerequest(int state) {
         if (state == 1) {
-             Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        boolean success = jsonObject.getBoolean("success");
-                        if (success) {
-                            Toast.makeText(ChangeAgreement.this, "약속 수정 완료", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(ChangeAgreement.this, MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(ChangeAgreement.this, "약속 수정 오류 발생", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(ChangeAgreement.this, nothingactivity.class);
-                            startActivity(intent);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            ChangeAgreement_validate ValidateRequest = new ChangeAgreement_validate(id, userphonenumber, otherphonenumber, endweekend, text, pid, responseListener);
-            RequestQueue queue = Volley.newRequestQueue(ChangeAgreement.this);
-            queue.add(ValidateRequest);
-        }
-
-        else {
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -156,12 +129,12 @@ public class ChangeAgreement extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                         boolean success = jsonObject.getBoolean("success");
                         if (success) {
-                            Toast.makeText(ChangeAgreement.this, "약속 수정 거절 완료", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(ChangeAgreement.this, MainActivity.class);
+                            Toast.makeText(AgreementFinish.this, "약속완료 완료", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(AgreementFinish.this, MainActivity.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(ChangeAgreement.this, "약속 수정 거절 오류 발생", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(ChangeAgreement.this, nothingactivity.class);
+                            Toast.makeText(AgreementFinish.this, "약속완료 오류 발생", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(AgreementFinish.this, nothingactivity.class);
                             startActivity(intent);
                         }
                     } catch (Exception e) {
@@ -169,8 +142,32 @@ public class ChangeAgreement extends AppCompatActivity {
                     }
                 }
             };
-            ChangeAgreement_validate ValidateRequest = new ChangeAgreement_validate(otherphonenumber, responseListener);
-            RequestQueue queue = Volley.newRequestQueue(ChangeAgreement.this);
+            Finish_validate ValidateRequest = new Finish_validate(userphonenumber, otherphonenumber, id, pid, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(AgreementFinish.this);
+            queue.add(ValidateRequest);
+        } else {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+                        if (success) {
+                            Toast.makeText(AgreementFinish.this, "약속완료 거절 완료", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(AgreementFinish.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(AgreementFinish.this, "약속완료 거절 오류 발생", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(AgreementFinish.this, nothingactivity.class);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            Finish_validate ValidateRequest = new Finish_validate(userphonenumber, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(AgreementFinish.this);
             queue.add(ValidateRequest);
         }
     }
