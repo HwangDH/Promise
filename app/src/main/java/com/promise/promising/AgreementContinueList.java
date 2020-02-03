@@ -54,7 +54,7 @@ public class AgreementContinueList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_agreement_continue_list);
 
         //CountTimer ct = new CountTimer();
         //ct.Count();
@@ -96,7 +96,8 @@ public class AgreementContinueList extends AppCompatActivity {
         //userphonenumber = intent.getStringExtra("userphonenumber");
 
         //데이터베이스 호출
-        String url = "https://appointment.kr/promise-php/promise/agreecontinuelist.php?userphonenumber="+userphonenumber+"";
+        //String url = "https://appointment.kr/promise-php/promise/agreecontinuelist.php?userphonenumber="+userphonenumber+"";
+        String url = "https://scv0319.cafe24.com/weall/promise/agreecontinuelist.php?userphonenumber="+userphonenumber+"";
         getData(url);
 
         //약속생성 버튼 클릭 시
@@ -249,94 +250,5 @@ public class AgreementContinueList extends AppCompatActivity {
     //뒤로가기 버튼 클릭 시 동작 함수
     @Override
     public void onBackPressed() {
-        //1번째 백버튼 클릭
-        if(System.currentTimeMillis()>backKeyPressedTime+2000){
-            backKeyPressedTime = System.currentTimeMillis();
-            Toast.makeText(this, "한번 더 누르시면 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
-        }
-        //2번째 백버튼 클릭 (종료)
-        else{
-            AppFinish();
-        }
     }
-
-    //앱종료
-    public void AppFinish(){
-        finish();
-        System.exit(0);
-        android.os.Process.killProcess(android.os.Process.myPid());
-    }
-
-
-   /* public void alarm() {
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        boolean success = jsonObject.getBoolean("success");
-                        if (success) {
-                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(MainActivity.this, "2", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, nothingactivity.class);
-                            startActivity(intent);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            ValidateRequest ValidateRequest = new ValidateRequest(userphonenumber, "1", responseListener);
-            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-            queue.add(ValidateRequest);
-    }*/
-
-  /*  public void Count(){
-        ScheduledJob job = new ScheduledJob();
-        Timer jobScheduler = new Timer();
-        jobScheduler.scheduleAtFixedRate(job, 1000, 10000);
-        try{
-            Thread.sleep(20000);
-        }catch (InterruptedException e){
-            jobScheduler.cancel();
-        }
-    }
-
-    class ScheduledJob extends TimerTask {
-        public void run() {
-            //signup("01097753356");
-            System.out.println(count);
-            alarm();
-        }
-        public void alarm() {
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        boolean success = jsonObject.getBoolean("success");
-                        if (success) {
-                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(MainActivity.this, "2", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, nothingactivity.class);
-                            startActivity(intent);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            ValidateRequest ValidateRequest = new ValidateRequest(userphonenumber, "1", responseListener);
-            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-            queue.add(ValidateRequest);
-    }
-}*/
-
-
 }

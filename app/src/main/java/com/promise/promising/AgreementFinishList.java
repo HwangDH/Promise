@@ -55,7 +55,7 @@ public class AgreementFinishList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_agreement_finish_list);
 
         //CountTimer ct = new CountTimer();
         //ct.Count();
@@ -97,7 +97,8 @@ public class AgreementFinishList extends AppCompatActivity {
         //userphonenumber = intent.getStringExtra("userphonenumber");
 
         //데이터베이스 호출
-        String url = "https://appointment.kr/promise-php/promise/agreefinishlist.php?userphonenumber="+userphonenumber+"";
+        //String url = "https://appointment.kr/promise-php/promise/agreefinishlist.php?userphonenumber="+userphonenumber+"";
+        String url = "https://scv0319.cafe24.com/weall/promise/agreefinishlist.php?userphonenumber="+userphonenumber+"";
         getData(url);
 
         //약속생성 버튼 클릭 시

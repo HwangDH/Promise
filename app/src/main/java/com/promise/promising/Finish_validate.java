@@ -10,8 +10,10 @@ import java.util.Map;
 
 public class Finish_validate extends StringRequest {
 
-    final static private String URL = "https://appointment.kr/promise-php/promise/agreementfinish.php";
-    final static private String URL2 = "https://appointment.kr/promise-php/promise/rejectfinishagreement.php";
+    //final static private String URL = "https://appointment.kr/promise-php/promise/agreementfinish.php";
+    //final static private String URL2 = "https://appointment.kr/promise-php/promise/rejectfinishagreement.php";
+    final static private String URL = "https://scv0319.cafe24.com/weall/promise/agreementfinish.php";
+    final static private String URL2 = "https://scv0319.cafe24.com/weall/promise/rejectfinishagreement.php";
     private Map<String, String> parameters;
 
     public Finish_validate(String userphonenumber,String otherphonenumber, String id, String pid, Response.Listener<String> listener){

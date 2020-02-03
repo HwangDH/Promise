@@ -1,6 +1,11 @@
 package com.promise.promising;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import com.android.promising.R;
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.promising.R;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,33 +34,26 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-
-public class DetailView extends AppCompatActivity {
-    Button btn1,btn2, btn3, btn4, btn5;
+public class WaitDetailView extends AppCompatActivity {
+    Button btn1,btn2;
     TextView name, date, time, txt1, txt2, txt3;
     AlertDialog alertDialog;
-    String id, userphonenumber, otherphonenumber, text, endweekend, restweek, agreement, agreement1, status, pid, pend;
-    String syear, smonth, sdate, shour, smin;
-    int sshour, ssmin, eehour, eemin, ssdate, eedate;
-    int length;
-    long backKeyPressedTime;
-
+    String id, userphonenumber, otherphonenumber, text, endweekend, restweek, agreement, agreement1, pid, pend;
+    int state=0;
     String myJSON;
     ListAdapter adapter;
     JSONArray peoples = null;
     ArrayList<HashMap<String, String>> personList;
     int count = 0;  //컬럼 수 계산
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_view);
+        setContentView(R.layout.activity_wait_detail_view);
 
         btn1 = (Button)findViewById(R.id.btn1); //확인버튼
         btn2 = (Button)findViewById(R.id.btn2); //승인버튼
-        btn3 = (Button)findViewById(R.id.btn3); //수정버튼
-        btn4 = (Button)findViewById(R.id.btn4); //삭제버튼
-        btn5 = (Button)findViewById(R.id.btn5); //약속승인버튼 취소
         name = (TextView)findViewById(R.id.name);   //이름
         date = (TextView)findViewById(R.id.date);   //날짜
         time = (TextView)findViewById(R.id.time);   //시간
@@ -78,13 +79,13 @@ public class DetailView extends AppCompatActivity {
         //time.setText(status+phour+"시"+pmin+"분");
         //txt1.setText(text);
 
-        //확인 버튼 클릭 시
+        //약속 동의
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog = new android.app.AlertDialog.Builder(DetailView.this).create();
-                alertDialog.setTitle("약속 확인");
-                alertDialog.setMessage("약속리스트 화면으로 되돌아 가시겠습니까?");
+                alertDialog = new android.app.AlertDialog.Builder(WaitDetailView.this).create();
+                alertDialog.setTitle("약속 동의");
+                alertDialog.setMessage("약속에 동의하시겠습니까?");
                 alertDialog.setCancelable(false);
 
                 //취소 버튼 클릭 시
@@ -99,8 +100,9 @@ public class DetailView extends AppCompatActivity {
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DetailView.this, MainActivity.class);
-
+                        state = 1;
+                        Intent intent = new Intent(WaitDetailView.this, MainActivity.class);
+                        agreementpromise(state);
                         startActivity(intent);
                     }
                 });
@@ -108,52 +110,13 @@ public class DetailView extends AppCompatActivity {
             }
         });
 
-        //약속 승인 버튼 클릭 시
+        //약속 거절
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(agreement.equals("0")){
-                    alertDialog = new android.app.AlertDialog.Builder(DetailView.this).create();
-                    alertDialog.setTitle("약속 승인");
-                    alertDialog.setMessage("약속을 승인하시겠습니까?");
-                    alertDialog.setCancelable(false);
-
-                    //취소 버튼 클릭 시
-                    alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            alertDialog.dismiss();
-                        }
-                    });
-
-                    //확인 버튼 클릭 시
-                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(DetailView.this, AgreementPromise.class);
-                            //intent.putExtra("userphonenumber", userphonenumber);
-                            //intent.putExtra("id", id);
-                            intent.putExtra("userphonenumber", userphonenumber);
-                            intent.putExtra("otherphonenumber", otherphonenumber);
-                            intent.putExtra("id", id);
-                            startActivity(intent);
-                        }
-                    });
-                    alertDialog.show();
-                }
-                else{
-                    Toast.makeText(DetailView.this, "이미 승인 상태입니다.", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        //약속수정 버튼 클릭 시
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog = new android.app.AlertDialog.Builder(DetailView.this).create();
-                alertDialog.setTitle("약속 수정");
-                alertDialog.setMessage("약속수정 화면으로 가시겠습니까?");
+                alertDialog = new android.app.AlertDialog.Builder(WaitDetailView.this).create();
+                alertDialog.setTitle("약속 거절");
+                alertDialog.setMessage("약속을 거절하시겠습니까?");
                 alertDialog.setCancelable(false);
 
                 //취소 버튼 클릭 시
@@ -168,85 +131,13 @@ public class DetailView extends AppCompatActivity {
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DetailView.this, PromiseChange.class);
-                        intent.putExtra("id", id);
-                        intent.putExtra("userphonenumber", userphonenumber);
-                        intent.putExtra("otherphonenumber", otherphonenumber);
-                        intent.putExtra("pid", pid);
+                        state = 0;
+                        Intent intent = new Intent(WaitDetailView.this, MainActivity.class);
+                        agreementpromise(state);
                         startActivity(intent);
                     }
                 });
                 alertDialog.show();
-            }
-        });
-
-        //약속삭제 버튼 클릭 시
-        btn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog = new android.app.AlertDialog.Builder(DetailView.this).create();
-                alertDialog.setTitle("약속 삭제");
-                alertDialog.setMessage("약속을 삭제하시겠습니까?");
-                alertDialog.setCancelable(false);
-
-                //취소 버튼 클릭 시
-                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                //확인 버튼 클릭 시
-                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(DetailView.this, PromiseRemove.class);
-                        intent.putExtra("userphonenumber", userphonenumber);
-                        intent.putExtra("otherphonenumber", otherphonenumber);
-                        intent.putExtra("id", id);
-                        intent.putExtra("pid", pid);
-                        startActivity(intent);
-                    }
-                });
-                alertDialog.show();
-            }
-        });
-
-        btn5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pend.equals("0")) {
-                    alertDialog = new android.app.AlertDialog.Builder(DetailView.this).create();
-                    alertDialog.setTitle("약속 완료");
-                    alertDialog.setMessage("약속을 완료 하시겠습니까?");
-                    alertDialog.setCancelable(false);
-
-                    //취소 버튼 클릭 시
-                    alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            alertDialog.dismiss();
-                        }
-                    });
-
-                    //확인 버튼 클릭 시
-                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(DetailView.this, AgreementCancel.class);
-                            intent.putExtra("userphonenumber", userphonenumber);
-                            intent.putExtra("id", id);
-                            intent.putExtra("otherphonenumber", otherphonenumber);
-                            intent.putExtra("pid", pid);
-                            startActivity(intent);
-                        }
-                    });
-                    alertDialog.show();
-                }
-                else{
-                    Toast.makeText(DetailView.this, "이미 약속이 완료된 상태입니다.", Toast.LENGTH_LONG).show();
-                }
             }
         });
     }
@@ -271,6 +162,7 @@ public class DetailView extends AppCompatActivity {
                 pid = object.getString("pid");
                 HashMap<String, String> persons = new HashMap<>();
 
+
                 name.setText(otherphonenumber);
                 date.setText(endweekend.substring(0,10));
                 time.setText(endweekend.substring(11,13)+"시"+endweekend.substring(14,16)+"분");
@@ -282,6 +174,7 @@ public class DetailView extends AppCompatActivity {
                 }
                 else{
                     txt2.setText("승인O");
+                    btn1.setEnabled(false);
                     btn2.setEnabled(false);
                 }
 
@@ -340,10 +233,57 @@ public class DetailView extends AppCompatActivity {
         return currentDate;
     }
 
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
+    public void agreementpromise(int state) {
+        if (state == 1) {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+                        if (success) {
+                            Toast.makeText(WaitDetailView.this, "약속승인 완료", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(WaitDetailView.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(WaitDetailView.this, "약속승인 오류 발생", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(WaitDetailView.this, nothingactivity.class);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            WaitDetail_validate ValidateRequest = new WaitDetail_validate(userphonenumber, otherphonenumber, id, pid, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(WaitDetailView.this);
+            queue.add(ValidateRequest);
+        }
+        else {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("success");
+                        if (success) {
+                            Toast.makeText(WaitDetailView.this, "약속거절 완료", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(WaitDetailView.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(WaitDetailView.this, "약속거절 오류 발생", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(WaitDetailView.this, nothingactivity.class);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            WaitDetail_validate ValidateRequest = new WaitDetail_validate(userphonenumber, otherphonenumber, id, pid, "1", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(WaitDetailView.this);
+            queue.add(ValidateRequest);
+        }
     }
 
 }

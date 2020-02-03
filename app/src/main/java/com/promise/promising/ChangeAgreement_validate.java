@@ -9,8 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChangeAgreement_validate extends StringRequest {
-    final static private String URL = "https://appointment.kr/promise-php/promise/changepromise.php";
-    final static private String URL2 = "https://appointment.kr/promise-php/promise/rejectchangepromise.php";
+    //final static private String URL = "https://appointment.kr/promise-php/promise/changepromise.php";
+    //final static private String URL2 = "https://appointment.kr/promise-php/promise/rejectchangepromise.php";
+    final static private String URL = "https://scv0319.cafe24.com/weall/promise/changepromise.php";
+    final static private String URL2 = "https://scv0319.cafe24.com/weall/promise/rejectchangepromise.php";
     private Map<String, String> parameters;
     //약속 수정 확인 시
     public ChangeAgreement_validate(String id, String userphonenumber, String otherphonenumber, String endweekend, String text, String pid, Response.Listener<String> listener){

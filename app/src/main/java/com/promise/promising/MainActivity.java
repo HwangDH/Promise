@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
     String [] otherphonenumber;
     String [] endweekend;
     String [] pid;
+    String [] pend;
     long backKeyPressedTime;
     static Boolean check= true;
 
@@ -59,8 +60,6 @@ public class MainActivity extends Activity {
 
         //CountTimer ct = new CountTimer();
         //ct.Count();
-
-
 
         //약속상대와 날짜를 나타내기 위해 XML에서 가져온 변수
         name = (TextView)findViewById(R.id.name);
@@ -97,7 +96,8 @@ public class MainActivity extends Activity {
         //userphonenumber = intent.getStringExtra("userphonenumber");
 
         //데이터베이스 호출
-        String url = "https://appointment.kr/promise-php/promise/promiseinfo.php?userphonenumber="+userphonenumber+"";
+        //String url = "https://appointment.kr/promise-php/promise/promiseinfo.php?userphonenumber="+userphonenumber+"";
+        String url = "https://scv0319.cafe24.com/weall/promise/promiseinfo.php?userphonenumber="+userphonenumber+"";
 
         getData(url);
 
@@ -184,6 +184,7 @@ public class MainActivity extends Activity {
             otherphonenumber=new String[peoples.length()];
             endweekend=new String[peoples.length()];
             pid=new String[peoples.length()];
+            pend = new String[peoples.length()];
             //JSON 배열 길이만큼 반복문을 실행
             while(count < peoples.length()){
                 JSONObject object = peoples.getJSONObject(count);
@@ -197,6 +198,8 @@ public class MainActivity extends Activity {
                 persons.put("otherphonenumber", otherphonenumber[count]);
                 persons.put("endweekend", endweekend[count]);
                 persons.put("pid", pid[count]);
+                persons.put("pend", pend[count]);
+
 
                 personList.add(persons);
 
@@ -251,22 +254,7 @@ public class MainActivity extends Activity {
     //뒤로가기 버튼 클릭 시 동작 함수
     @Override
     public void onBackPressed() {
-        //1번째 백버튼 클릭
-        if(System.currentTimeMillis()>backKeyPressedTime+2000){
-            backKeyPressedTime = System.currentTimeMillis();
-            Toast.makeText(this, "한번 더 누르시면 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
-        }
-        //2번째 백버튼 클릭 (종료)
-        else{
-            AppFinish();
-        }
-    }
 
-    //앱종료
-    public void AppFinish(){
-        finish();
-        System.exit(0);
-        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
 

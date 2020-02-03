@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.promise.promising.AgreementFinish"></activity>
+        <activity android:name="com.promise.promising.ContinueDetailView"></activity>
+        <activity android:name="com.promise.promising.WaitDetailView" />
+        <activity android:name="com.promise.promising.AgreementFinish" />
         <activity android:name="com.promise.promising.AgreementFinishList" />
         <activity android:name="com.promise.promising.AgreementContinueList" />
         <activity android:name="com.promise.promising.AgreementWaitList" />

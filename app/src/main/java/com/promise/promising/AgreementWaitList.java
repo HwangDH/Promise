@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AgreementWaitList extends AppCompatActivity {
-    TextView name, date;
+    TextView name, date, category;
     Button btn1, agreement_wait, agreement_continue, agreement_finish;
     AlertDialog alertDialog;
     ListView listview;
@@ -48,13 +48,15 @@ public class AgreementWaitList extends AppCompatActivity {
     String [] otherphonenumber;
     String [] endweekend;
     String [] pid;
+    String [] pend;
+
     long backKeyPressedTime;
     static Boolean check= true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_agreement_wait_list);
 
         //CountTimer ct = new CountTimer();
         //ct.Count();
@@ -64,6 +66,7 @@ public class AgreementWaitList extends AppCompatActivity {
         //약속상대와 날짜를 나타내기 위해 XML에서 가져온 변수
         name = (TextView)findViewById(R.id.name);
         date = (TextView)findViewById(R.id.date);
+        category = (TextView)findViewById(R.id.category);
 
         //btn1 = 약속생성 버튼, btn2 = 약속수정버튼
         btn1 = (Button)findViewById(R.id.btn1);
@@ -96,8 +99,8 @@ public class AgreementWaitList extends AppCompatActivity {
         //userphonenumber = intent.getStringExtra("userphonenumber");
 
         //데이터베이스 호출
-        String url = "https://appointment.kr/promise-php/promise/agreewaitlist.php?userphonenumber="+userphonenumber+"";
-
+        //String url = "https://appointment.kr/promise-php/promise/agreewaitlist.php?userphonenumber="+userphonenumber+"";
+        String url = "https://scv0319.cafe24.com/weall/promise/agreewaitlist.php?userphonenumber="+userphonenumber+"";
         getData(url);
 
         //약속생성 버튼 클릭 시
@@ -163,7 +166,7 @@ public class AgreementWaitList extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long ids) {
-                Intent intent = new Intent(getApplicationContext(), DetailView.class);
+                Intent intent = new Intent(getApplicationContext(), WaitDetailView.class);
                 intent.putExtra("userphonenumber", userphonenumber);                //나의 폰번호
                 intent.putExtra("id", id[position]);                                    //나의 약속번호
                 intent.putExtra("otherphonenumber", otherphonenumber[position]);    //상대방 폰번호
@@ -183,6 +186,8 @@ public class AgreementWaitList extends AppCompatActivity {
             otherphonenumber=new String[peoples.length()];
             endweekend=new String[peoples.length()];
             pid=new String[peoples.length()];
+            pend = new String[peoples.length()];
+
             //JSON 배열 길이만큼 반복문을 실행
             while(count < peoples.length()){
                 JSONObject object = peoples.getJSONObject(count);
@@ -190,19 +195,34 @@ public class AgreementWaitList extends AppCompatActivity {
                 otherphonenumber[count] = object.getString("otherphonenumber");
                 endweekend[count] = object.getString("endweekend");
                 pid[count] = object.getString("pid");
+                pend[count] = object.getString("pend");
                 HashMap<String, String> persons = new HashMap<>();
+
+                if(pend[count].equals("0")){
+                    pend[count] = "생성 대기";
+                }
+                else if(pend[count].equals("1")){
+                    pend[count] = "수정 대기";
+                }
+                else if(pend[count].equals("2")){
+                    pend[count] = "삭제 대기";
+                }
+                else if(pend[count].equals("3")){
+                    pend[count] = "완료 대기";
+                }
 
                 persons.put("id", id[count]);
                 persons.put("otherphonenumber", otherphonenumber[count]);
                 persons.put("endweekend", endweekend[count]);
                 persons.put("pid", pid[count]);
+                persons.put("pend", pend[count]);
 
                 personList.add(persons);
 
                 adapter = new SimpleAdapter(
-                        AgreementWaitList.this, personList, R.layout.promise_list,
-                        new String[] {"otherphonenumber", "endweekend"},
-                        new int[] {R.id.name, R.id.date}
+                        AgreementWaitList.this, personList, R.layout.wait_list,
+                        new String[] {"otherphonenumber", "endweekend", "pend"},
+                        new int[] {R.id.name, R.id.date, R.id.category}
                 );
                 listview.setAdapter(adapter);
                 count++;
@@ -247,97 +267,8 @@ public class AgreementWaitList extends AppCompatActivity {
         g.execute(url);
     }
 
-    //뒤로가기 버튼 클릭 시 동작 함수
-    @Override
-    public void onBackPressed() {
-        //1번째 백버튼 클릭
-        if(System.currentTimeMillis()>backKeyPressedTime+2000){
-            backKeyPressedTime = System.currentTimeMillis();
-            Toast.makeText(this, "한번 더 누르시면 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
-        }
-        //2번째 백버튼 클릭 (종료)
-        else{
-            AppFinish();
-        }
+    @Override public void onBackPressed() {
+        //super.onBackPressed();
     }
-
-    //앱종료
-    public void AppFinish(){
-        finish();
-        System.exit(0);
-        android.os.Process.killProcess(android.os.Process.myPid());
-    }
-
-
-   /* public void alarm() {
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        boolean success = jsonObject.getBoolean("success");
-                        if (success) {
-                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(MainActivity.this, "2", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, nothingactivity.class);
-                            startActivity(intent);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            ValidateRequest ValidateRequest = new ValidateRequest(userphonenumber, "1", responseListener);
-            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-            queue.add(ValidateRequest);
-    }*/
-
-  /*  public void Count(){
-        ScheduledJob job = new ScheduledJob();
-        Timer jobScheduler = new Timer();
-        jobScheduler.scheduleAtFixedRate(job, 1000, 10000);
-        try{
-            Thread.sleep(20000);
-        }catch (InterruptedException e){
-            jobScheduler.cancel();
-        }
-    }
-
-    class ScheduledJob extends TimerTask {
-        public void run() {
-            //signup("01097753356");
-            System.out.println(count);
-            alarm();
-        }
-        public void alarm() {
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        boolean success = jsonObject.getBoolean("success");
-                        if (success) {
-                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(MainActivity.this, "2", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MainActivity.this, nothingactivity.class);
-                            startActivity(intent);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            ValidateRequest ValidateRequest = new ValidateRequest(userphonenumber, "1", responseListener);
-            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-            queue.add(ValidateRequest);
-    }
-}*/
-
 
 }
