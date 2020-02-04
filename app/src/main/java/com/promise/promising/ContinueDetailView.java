@@ -104,8 +104,8 @@ public class ContinueDetailView extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         state = 1;
-                        Intent intent = new Intent(ContinueDetailView.this, MainActivity.class);
-                        process(state);
+                        Intent intent = new Intent(ContinueDetailView.this, PromiseChange.class);
+                        //process(state);
                         startActivity(intent);
                     }
                 });
@@ -136,7 +136,7 @@ public class ContinueDetailView extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         state = 2;
                         Intent intent = new Intent(ContinueDetailView.this, MainActivity.class);
-                        process(state);
+                        //process(state);
                         startActivity(intent);
                     }
                 });
@@ -167,7 +167,7 @@ public class ContinueDetailView extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         state = 3;
                         Intent intent = new Intent(ContinueDetailView.this, MainActivity.class);
-                        process(state);
+                        //process(state);
                         startActivity(intent);
                     }
                 });
